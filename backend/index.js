@@ -138,6 +138,33 @@ app.get('/recipes', (req, res) => {
     res.status(200).send(data);
 })
 
+/**
+ * Add ingredient to a recipe
+ */
+//  app.put('/recipes/:id/ingredients', body('name').isString(), (req, res) => {
+//     const ingredient = {
+//         "id": uuidv4(),
+//         "name": req.body.name
+//     }
+
+//     const recipeId = req.params.id
+//     if (recipeId in data) {
+//         data[recipeId].ingredients.append(ingredient)
+//     }
+// })
+
+/**
+ * Delete a recipe
+ */
+app.delete('/recipes/:id', (req, res) => {
+    const recipeId = req.params.id
+    delete data[recipeId]
+    res.status(200).send({
+        "status": 200,
+        "message": "Success",
+    })
+})
+
 app.listen(port, () => {
   console.log(`Cooking Recipe Suggestions App listening on port ${port}`)
 })
