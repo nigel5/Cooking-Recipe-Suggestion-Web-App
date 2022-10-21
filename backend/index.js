@@ -16,7 +16,7 @@ const port = 3000
 /**
  * Test data
  */
-const data = {
+let data = {
     1: {
         "id": 1,
         "name": "Recipe 1",
@@ -101,6 +101,10 @@ const notFoundResponse = {
     "status": 404,
     "message": "Not found",
 }
+const successResponse = {
+    "status": 200,
+    "message": "Success",
+}
 
 /**
  * Middleware
@@ -159,10 +163,26 @@ app.get('/recipes', (req, res) => {
 app.delete('/recipes/:id', (req, res) => {
     const recipeId = req.params.id
     delete data[recipeId]
-    res.status(200).send({
-        "status": 200,
-        "message": "Success",
-    })
+    res.status(200).send(successResponse)
+})
+
+/**  
+* Add a recipe
+*/
+app.post('/recipes/add', (req, res) => {
+    const recipe = {
+        id: uuidv4(),
+        name: req.body.name,
+        description: req.body.description ? req.body.description: '',
+        ingredients: req.body.ingredients ? req.body.ingredients : [],
+        steps: req.body.steps ? req.body.steps : [],
+        preparationTime: req.body.preparationTime,
+        cookingTime: req.body.cookingTime,
+        deleted: false
+    }
+    //refactor when SQL is hooked up
+    data[uuidv4()] = recipe
+    res.status(200).send(successResponse)
 })
 
 app.listen(port, () => {
