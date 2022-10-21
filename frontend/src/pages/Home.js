@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   body: {
     margin: "40px 82px 40px 82px",
   },
-  homeCard: {
+  trendingCard: {
     margin: "40px",
     height: "640px",
     display: "flex",
@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
   authorDetails: {
     display: "inline-flex",
-    alignItems: "center",
     marginTop: "104px",
   },
   cardChips: {
@@ -46,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "10%",
     padding: "16px",
+    borderRadius: "10%",
   },
   ingredientsCarousel: {
     display: "flex",
@@ -57,10 +57,20 @@ const useStyles = makeStyles((theme) => ({
   },
   recipesList: {
     display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   recipeCard: {
-    width: "33%",
-    height: "400px",
+    width: "400px",
+    margin: "40px",
+    borderRadius: "10%",
+  },
+  recipeCardImg: {
+    height: "275px",
+    objectFit: "cover",
+  },
+  recipeCardContent: {
+    paddingBottom: "36px",
   }
   
 }));
@@ -71,8 +81,8 @@ const Home = () => {
   return (
     <React.Fragment>
     <div className={classes.body}>
-      <div className={classes.section}>
-        <Card className={classes.homeCard} raised>
+      <div className={classes.trendingSection}>
+        <Card className={classes.trendingCard} raised>
           <CardContent className={classes.cardContent}>
             <Chip label="🔥 Hot Recipe" />
             <Typography gutterBottom variant="h2" component="div">
@@ -91,7 +101,7 @@ const Home = () => {
             <div className={classes.authorDetails}>
               <Avatar style={{marginRight: "16px"}}>AD</Avatar>
               <div>
-                <Typography variant="caption" paragraph>Alton D</Typography>
+                <Typography variant="caption">Alton D</Typography>
                 <Typography variant="caption" paragraph>10 September 2022</Typography>
               </div>
             </div>
@@ -100,9 +110,7 @@ const Home = () => {
             className={classes.mainCardImg}
             component="img"
             image="https://c9u8e9q4.rocketcdn.me/wp-content/uploads/2020/01/Keto-Sweet-Chili-Wings-1-square.jpg"
-            alt="green iguana"
           />
-          
         </Card>
       </div>
       <div className={classes.section}>
@@ -163,8 +171,6 @@ const Home = () => {
             <Typography variant="h4" align="center">Potato</Typography>
           </Card>
         </div>
-        
-        </div>
       </div>
       <div className={classes.section}>
         <div className={classes.recipesHeader}>
@@ -178,26 +184,108 @@ const Home = () => {
         <div className={classes.recipesList}>
           <Card className={classes.recipeCard}>
             <CardMedia
-            component="img"
-            image="https://www.peelwithzeal.com/wp-content/uploads/2021/11/wagyu-burger-10.jpg"
-            alt="green iguana"
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://www.peelwithzeal.com/wp-content/uploads/2021/11/wagyu-burger-10.jpg"
             />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Lizard
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Big and Juicy Wagyu Beef Cheeseburger
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Lizards are a widespread group of squamate reptiles, with over 6,000
-                species, ranging across all continents except Antarctica
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Share</Button>
-              <Button size="small">Learn More</Button>
+              <CardActions>
+                <Chip label="⏰ 30 Minutes" />
+                <Chip label="🍴 Snack" />
             </CardActions>
+            </CardContent>
+          </Card>
+
+          <Card className={classes.recipeCard}>
+            <CardMedia
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://healthyfitnessmeals.com/wp-content/uploads/2022/02/Cilantro-lime-grilled-salmon-6.jpg"
+            />
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Fresh Lime Roasted Salmon with Ginger Sauce
+              </Typography>
+              <CardActions>
+                <Chip label="⏰ 30 Minutes" />
+                <Chip label="🍴 Fish" />
+            </CardActions>
+            </CardContent>
+          </Card>
+
+          <Card className={classes.recipeCard}>
+            <CardMedia
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://foodhub.scene7.com/is/image/woolworthsltdprod/1108-utpancakes-large:Mobile-1300x1150"
+            />
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Strawberry Oatmeal Pancake with Honey Syrup
+              </Typography>
+              <CardActions>
+                <Chip label="⏰ 30 Minutes" />
+                <Chip label="🍴 Breakfast" />
+            </CardActions>
+            </CardContent>
+          </Card>
+
+          <Card className={classes.recipeCard}>
+            <CardMedia
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://casuallypeckish.com/wp-content/uploads/2021/12/Creamy-chicken-and-bacon-pasta-7.jpg"
+            />
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Creamy Chicken and Bacon Pasta
+              </Typography>
+              <CardActions>
+                <Chip label="⏰ 45 Minutes" />
+                <Chip label="🍴 Noodles" />
+            </CardActions>
+            </CardContent>
+          </Card>
+
+          <Card className={classes.recipeCard}>
+            <CardMedia
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://casuallypeckish.com/wp-content/uploads/2022/04/Mapo-tofu-7.jpg"
+            />
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Mapo Tofu
+              </Typography>
+              <CardActions>
+                <Chip label="⏰ 30 Minutes" />
+                <Chip label="🍴 Vegetarian" />
+            </CardActions>
+            </CardContent>
+          </Card>
+
+          <Card className={classes.recipeCard}>
+            <CardMedia
+              className={classes.recipeCardImg}
+              component="img"
+              image="https://bakerbynature.com/wp-content/uploads/2015/10/IMG_0483-5-2.jpg"
+            />
+            <CardContent className={classes.recipeCardContent}>
+              <Typography gutterBottom variant="h5" align="left">
+                Nutella Cinnamon Sugar Doughnuts
+              </Typography>
+              <CardActions>
+                <Chip label="⏰ 2 hours" />
+                <Chip label="🍴 Sweet" />
+            </CardActions>
+            </CardContent>
           </Card>
         </div>
       </div>
+    </div>
     </React.Fragment>
   );
 };
