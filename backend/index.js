@@ -3,6 +3,7 @@
  * CPS714 Group E
  * 
  */
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -11,7 +12,7 @@ const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 const app = express()
 const port = 3000
-
+const { Sequelize } = require('sequelize');
 
 /**
  * Test data
@@ -39,19 +40,19 @@ let data = {
         "steps": [
             {
                 "order": 1,
-                "description" : "toast bread",
+                "description": "toast bread",
             },
             {
                 "order": 2,
-                "description" : "spread peanut butter on one slice of bread",
+                "description": "spread peanut butter on one slice of bread",
             },
             {
                 "order": 3,
-                "description" : "spread jam on the other slice of bread",
+                "description": "spread jam on the other slice of bread",
             },
             {
                 "order": 4,
-                "description" : "put them together",
+                "description": "put them together",
             },
         ],
         "preparationTime": 5,
@@ -80,15 +81,15 @@ let data = {
         "steps": [
             {
                 "order": 1,
-                "description" : "cook rice and tuna",
+                "description": "cook rice and tuna",
             },
             {
                 "order": 2,
-                "description" : "add tuna",
+                "description": "add tuna",
             },
             {
                 "order": 3,
-                "description" : "boil and add brocolli to bowl",
+                "description": "boil and add brocolli to bowl",
             },
         ],
         "preparationTime": 15,
@@ -113,13 +114,24 @@ app.use(helmet())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(bodyParser.json())
 
+/**
+ * Database Connection
+ */
+const sequelize = new Sequelize(process.env.DATABASE_URL)
+sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.')
+})
+.catch((err) => {
+    console.error('Unable to connect to the database:', error)
+    process.exit(-1);
+})
 
 /**
  * Endpoints
  */
 
 app.get('/', (req, res) => {
-  res.send('There\'s nothing here')
+    res.send('There\'s nothing here')
 })
 
 /**
@@ -173,7 +185,7 @@ app.post('/recipes/add', (req, res) => {
     const recipe = {
         id: uuidv4(),
         name: req.body.name,
-        description: req.body.description ? req.body.description: '',
+        description: req.body.description ? req.body.description : '',
         ingredients: req.body.ingredients ? req.body.ingredients : [],
         steps: req.body.steps ? req.body.steps : [],
         preparationTime: req.body.preparationTime,
@@ -186,5 +198,5 @@ app.post('/recipes/add', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Cooking Recipe Suggestions App listening on port ${port}`)
+    console.log(`Cooking Recipe Suggestions App listening on port ${port}`)
 })
