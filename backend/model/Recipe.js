@@ -29,6 +29,10 @@ module.exports = function(sequelize, DataTypes) {
     Servings: {
       type: DataTypes.BIGINT,
       allowNull: true
+    },
+    Name: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,
