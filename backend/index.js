@@ -12,7 +12,8 @@ const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 const app = express()
 const port = 3000
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
+const initModels = require('./model/init-models')
 
 /**
  * Test data
@@ -107,6 +108,11 @@ const successResponse = {
     "message": "Success",
 }
 
+const errorResponse = (msg) => ({
+    "status": 400,
+    "msg": msg
+})
+
 /**
  * Middleware
  */
@@ -125,6 +131,14 @@ sequelize.authenticate().then(() => {
     console.error('Unable to connect to the database:', error)
     process.exit(-1);
 })
+
+const { 
+    Ingredient_Index,
+    Recipe,
+    Recipe_Ingredient,
+    Recipe_Ingredient_Index,
+    Recipe_Step
+} = initModels(sequelize);
 
 /**
  * Endpoints
@@ -195,6 +209,33 @@ app.post('/recipes/add', (req, res) => {
     //refactor when SQL is hooked up
     data[uuidv4()] = recipe
     res.status(200).send(successResponse)
+})
+
+/**
+ * Get ingredients
+ */
+app.get('/ingredients/:page', async (req, res) => {
+    const page = Number(req.params.page);
+
+    if (!Number.isInteger(page) || page < 0 || page > 200) {
+        return res.status(400).send(errorResponse("Bad pagination index. Please enter a number between 0 and 200."));
+    }
+
+    const offset = page * 10;
+
+    const ingredients = await Ingredient_Index.findAndCountAll({
+        order: [
+            ['IngredientString', 'ASC']
+        ],
+        offset,
+        limit: 100
+    });
+
+    res.send({
+        page,
+        count: ingredients.rows.length,
+        data: ingredients.rows
+    });
 })
 
 app.listen(port, () => {
