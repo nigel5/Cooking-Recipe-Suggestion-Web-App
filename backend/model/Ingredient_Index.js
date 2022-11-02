@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     IngredientString: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      unique: "Ingredient_Index_IngredientString_key"
     }
   }, {
     sequelize,
@@ -16,6 +17,13 @@ module.exports = function(sequelize, DataTypes) {
     schema: 'public',
     timestamps: false,
     indexes: [
+      {
+        name: "Ingredient_Index_IngredientString_key",
+        unique: true,
+        fields: [
+          { name: "IngredientString" },
+        ]
+      },
       {
         name: "Ingredient_Index_pk",
         unique: true,

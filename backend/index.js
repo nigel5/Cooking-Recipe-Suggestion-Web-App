@@ -137,7 +137,7 @@ const {
     Recipe,
     Recipe_Ingredient,
     Recipe_Ingredient_Index,
-    Recipe_Step
+    RecipeStep
 } = initModels(sequelize);
 
 /**
@@ -233,7 +233,7 @@ app.get('/ingredients/:page', async (req, res) => {
 
     res.send({
         page,
-        count: ingredients.rows.length,
+        count: ingredients.length,
         data: ingredients.rows
     });
 })

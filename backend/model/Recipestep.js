@@ -1,34 +1,38 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Recipe_Step', {
+  return sequelize.define('RecipeStep', {
+    StepID: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true
+    },
+    StepInfo: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    OrderOfStep: {
+      type: DataTypes.BIGINT,
+      allowNull: false
+    },
     RecipeID: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
       references: {
         model: 'Recipe',
         key: 'RecipeID'
       }
-    },
-    StepInfo: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    OrderOfStep: {
-      type: DataTypes.BIGINT,
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'Recipe_Step',
+    tableName: 'RecipeStep',
     schema: 'public',
     timestamps: false,
     indexes: [
       {
-        name: "RecipeStep_pk",
+        name: "recipestep_pkey",
         unique: true,
         fields: [
-          { name: "RecipeID" },
+          { name: "StepID" },
         ]
       },
     ]
