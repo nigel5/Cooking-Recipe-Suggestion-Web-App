@@ -1,18 +1,22 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Recipe_Ingredient', {
+    RecipeIngredientID: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true
+    },
+    RawIngredient: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     RecipeID: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
       references: {
         model: 'Recipe',
         key: 'RecipeID'
       }
-    },
-    RawIngredient: {
-      type: DataTypes.TEXT,
-      allowNull: true
     }
   }, {
     sequelize,
@@ -21,10 +25,10 @@ module.exports = function(sequelize, DataTypes) {
     timestamps: false,
     indexes: [
       {
-        name: "Recipe_Ingredient_pk",
+        name: "recipe_ingredient_pkey",
         unique: true,
         fields: [
-          { name: "RecipeID" },
+          { name: "RecipeIngredientID" },
         ]
       },
     ]

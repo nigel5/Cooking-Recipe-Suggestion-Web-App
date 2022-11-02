@@ -3,6 +3,12 @@
  * CPS714 Group E
  * 
  */
+
+
+// TODO Add a cache e.g., Redis, to reduce the number of db queries
+// TOOD Every x hours it should read from the DB to update the cache
+// importIngredients(Ingredient_Index);
+// importRecipes(Recipe, Recipe_Ingredient_Index, RecipeStep, Recipe_Ingredient);
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
@@ -14,6 +20,8 @@ const app = express()
 const port = 3000
 const { Sequelize } = require('sequelize')
 const initModels = require('./model/init-models')
+// const importRecipes = require('./util/importRecipes')
+// const importIngredients = require('./util/importIngredients')
 
 /**
  * Test data

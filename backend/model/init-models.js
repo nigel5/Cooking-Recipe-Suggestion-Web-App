@@ -17,9 +17,9 @@ function initModels(sequelize) {
   RecipeStep.belongsTo(Recipe, { as: "Recipe", foreignKey: "RecipeID"});
   Recipe.hasMany(RecipeStep, { as: "RecipeSteps", foreignKey: "RecipeID"});
   Recipe_Ingredient.belongsTo(Recipe, { as: "Recipe", foreignKey: "RecipeID"});
-  Recipe.hasOne(Recipe_Ingredient, { as: "Recipe_Ingredient", foreignKey: "RecipeID"});
+  Recipe.hasMany(Recipe_Ingredient, { as: "Recipe_Ingredients", foreignKey: "RecipeID"});
   Recipe_Ingredient_Index.belongsTo(Recipe, { as: "Recipe", foreignKey: "RecipeID"});
-  Recipe.hasOne(Recipe_Ingredient_Index, { as: "Recipe_Ingredient_Index", foreignKey: "RecipeID"});
+  Recipe.hasMany(Recipe_Ingredient_Index, { as: "Recipe_Ingredient_Indices", foreignKey: "RecipeID"});
 
   return {
     Ingredient_Index,
