@@ -14,14 +14,14 @@ ingredients.forEach((ingredient) => {
 const bulkRecipes = []
 recipes.forEach((recipe) => {
     const name = recipe.name
-    const pk = name.toLowerCase().split(' ').join('-');
+    const pk = name.toLowerCase().split(' ').join('-').replace(/[^\w^-\s]/gi, '');
     const description = recipe["description"]
     const cuisine = recipe["cuisine"]
     const img  = recipe["img"]
     const prepTime  = recipe["details"]["prep_time"]
     const cookingTime  = recipe["details"]["cook_time"]
     const servings  = recipe["details"]["servings"]
-
+    s.replace(/[^\w^-\s]/gi, '')
     bulkRecipes.push({
         RecipeID: pk,
         Name: name,
