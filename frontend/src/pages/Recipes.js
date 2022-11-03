@@ -3,6 +3,10 @@ import { AccessTimeFilled, CheckCircle, RadioButtonUnchecked, IosShare, Print, R
 import { makeStyles } from '@material-ui/core/styles';
 import { Image } from 'mui-image'
 import React from "react";
+import { recipeAndIngredientsList, testRecipeItems } from "../testData/testData";
+import RecipeCardList from "../components/RecipeCardList";
+import IngredientSectionList from "../components/IngredientSectionList";
+import StrikeThroughText from "../components/StrikeThroughText";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,14 +49,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     padding: "32px",
   },
-  ingredientsHeader: {
-    marginBottom: "48px",
-  },
-  ingredientChecklistItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: "12px",
-  },
   directionsChecklistItem: {
     display: "flex",
     alignItems: "center",
@@ -65,15 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
   directionItem: {
     marginBottom: "48px",
-  },
-  ingredientsSubsection: {
-    marginBottom: "64px",
-  },
-  recipeIngredients: {
-    marginBottom: "22px",
-  },
-  ingredientsSection: {
-    width: "60%",    
   },
   directionsSection: {
     width: "60%",
@@ -104,6 +91,9 @@ const useStyles = makeStyles((theme) => ({
   },
   otherRecipesCardItem: {
     marginBottom: "24px"
+  },
+  suggestionsSection: {
+    textAlign: "center"
   }
 
 }));
@@ -236,61 +226,7 @@ const Recipes = () => {
         <Typography variant="subtitle1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Typography>
       </div>
       <div className={`${classes.sectionMargin} ${classes.ingredientsContainer}`}>
-        <div className={classes.ingredientsSection}>
-          <Typography variant="h4" className={classes.ingredientsHeader}>Ingredients</Typography>
-          <div className={classes.recipeIngredients}>
-            <div className={classes.ingredientsSubsection}>
-              <Typography variant="h5">For Main Dish</Typography>
-              <div>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-              </div>
-            </div>
-            <div className={classes.ingredientsSubsection}>
-            <Typography variant="h5">For The Sauce</Typography>
-              <div>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-                <div className={classes.ingredientChecklistItem}>
-                  <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-                  <Typography variant="body1"> Lorem ipsum dolor sit amet</Typography>
-                </div>
-                <Divider/>
-              </div>
-            </div>
-          </div>
-        </div>
+        <IngredientSectionList recipeAndIngredientsList={recipeAndIngredientsList}/>
         <div className={classes.otherRecipesSection}>
           <Typography variant="h4" className={classes.otherRecipesHeader}>Other Recipes</Typography>
           <Card className={classes.otherRecipesCardItem}>
@@ -333,8 +269,7 @@ const Recipes = () => {
         <Typography variant="h4" className={classes.directionsHeader}>Directions</Typography>
         <div className={classes.directionItem}>
           <div className={classes.directionsChecklistItem}>
-            <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-              <Typography variant="h5" bold>1. Lorem ipsum dolor sit amet</Typography>
+            <StrikeThroughText variant={"h5"} text={"1. Lorem ipsum dolor sit amet"}/>
           </div>
           <div className={classes.directionsDescription}>
             <Typography variant="body1">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</Typography>
@@ -344,8 +279,7 @@ const Recipes = () => {
 
         <div className={classes.directionItem}>
           <div className={classes.directionsChecklistItem}>
-            <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-            <Typography variant="h5" bold>2. Lorem ipsum dolor sit amet</Typography>
+            <StrikeThroughText variant={"h5"} text={"2. Lorem ipsum dolor sit amet"}/>
           </div>
           <div className={classes.directionsDescription}>
             <Typography variant="body1">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</Typography>
@@ -355,8 +289,7 @@ const Recipes = () => {
 
         <div className={classes.directionItem}>
           <div className={classes.directionsChecklistItem}>
-            <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-            <Typography variant="h5" bold>3. Lorem ipsum dolor sit amet</Typography>
+            <StrikeThroughText variant={"h5"} text={"3. Lorem ipsum dolor sit amet"}/>
           </div>
           <div className={classes.directionsDescription}>
             <Typography variant="body1">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</Typography>
@@ -366,8 +299,7 @@ const Recipes = () => {
 
         <div className={classes.directionItem}>
           <div className={classes.directionsChecklistItem}>
-            <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>}/>
-            <Typography variant="h5" bold>4. Lorem ipsum dolor sit amet</Typography>
+            <StrikeThroughText variant={"h5"} text={"4. Lorem ipsum dolor sit amet"}/>
           </div>
           <div className={classes.directionsDescription}>
             <Typography variant="body1">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</Typography>
@@ -375,6 +307,14 @@ const Recipes = () => {
           <Divider/>
         </div>
 
+      </div>
+      <div>
+        <div className={classes.suggestionsSection}>
+          <Typography variant="h4">You may also like</Typography>
+        </div>
+        <div>
+          <RecipeCardList recipeCardList={testRecipeItems}/>
+        </div>
       </div>
     </div>
   );

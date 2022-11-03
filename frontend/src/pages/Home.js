@@ -10,6 +10,9 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import RecipeCard from "../components/RecipeCard";
+import { testRecipeItems } from "../testData/testData";
+import RecipeCardList from "../components/RecipeCardList";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -55,24 +58,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "150px",
     textAlign: "center",
   },
-  recipesList: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  recipeCard: {
-    width: "400px",
-    margin: "40px",
-    borderRadius: "10%",
-  },
-  recipeCardImg: {
-    height: "275px",
-    objectFit: "cover",
-  },
-  recipeCardContent: {
-    paddingBottom: "36px",
-  }
-  
 }));
 
 const Home = () => {
@@ -181,108 +166,8 @@ const Home = () => {
             Find new and easy recipes easily
           </Typography>  
         </div>
-        <div className={classes.recipesList}>
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://www.peelwithzeal.com/wp-content/uploads/2021/11/wagyu-burger-10.jpg"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Big and Juicy Wagyu Beef Cheeseburger
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 30 Minutes" />
-                <Chip label="🍴 Snack" />
-            </CardActions>
-            </CardContent>
-          </Card>
-
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://healthyfitnessmeals.com/wp-content/uploads/2022/02/Cilantro-lime-grilled-salmon-6.jpg"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Fresh Lime Roasted Salmon with Ginger Sauce
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 30 Minutes" />
-                <Chip label="🍴 Fish" />
-            </CardActions>
-            </CardContent>
-          </Card>
-
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://foodhub.scene7.com/is/image/woolworthsltdprod/1108-utpancakes-large:Mobile-1300x1150"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Strawberry Oatmeal Pancake with Honey Syrup
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 30 Minutes" />
-                <Chip label="🍴 Breakfast" />
-            </CardActions>
-            </CardContent>
-          </Card>
-
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://casuallypeckish.com/wp-content/uploads/2021/12/Creamy-chicken-and-bacon-pasta-7.jpg"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Creamy Chicken and Bacon Pasta
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 45 Minutes" />
-                <Chip label="🍴 Noodles" />
-            </CardActions>
-            </CardContent>
-          </Card>
-
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://casuallypeckish.com/wp-content/uploads/2022/04/Mapo-tofu-7.jpg"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Mapo Tofu
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 30 Minutes" />
-                <Chip label="🍴 Vegetarian" />
-            </CardActions>
-            </CardContent>
-          </Card>
-
-          <Card className={classes.recipeCard}>
-            <CardMedia
-              className={classes.recipeCardImg}
-              component="img"
-              image="https://bakerbynature.com/wp-content/uploads/2015/10/IMG_0483-5-2.jpg"
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                Nutella Cinnamon Sugar Doughnuts
-              </Typography>
-              <CardActions>
-                <Chip label="⏰ 2 hours" />
-                <Chip label="🍴 Sweet" />
-            </CardActions>
-            </CardContent>
-          </Card>
+        <div>
+          <RecipeCardList recipeCardList={testRecipeItems}/>
         </div>
       </div>
     </div>
