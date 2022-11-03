@@ -1,3 +1,7 @@
-### Frontend
+### Backend
 
-The frontend will be developed using React.
+## Install dependencies
+`npm install`
+
+## Run development server
+`npm run start`

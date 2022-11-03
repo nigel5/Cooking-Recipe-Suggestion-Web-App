@@ -3,6 +3,13 @@
  * CPS714 Group E
  * 
  */
+
+
+// TODO Add a cache e.g., Redis, to reduce the number of db queries
+// TOOD Every x hours it should read from the DB to update the cache
+// importIngredients(Ingredient_Index);
+// importRecipes(Recipe, Recipe_Ingredient_Index, RecipeStep, Recipe_Ingredient);
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -11,7 +18,10 @@ const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 const app = express()
 const port = 3000
-
+const { Sequelize } = require('sequelize')
+const initModels = require('./model/init-models')
+// const importRecipes = require('./util/importRecipes')
+// const importIngredients = require('./util/importIngredients')
 
 /**
  * Test data
@@ -39,19 +49,19 @@ let data = {
         "steps": [
             {
                 "order": 1,
-                "description" : "toast bread",
+                "description": "toast bread",
             },
             {
                 "order": 2,
-                "description" : "spread peanut butter on one slice of bread",
+                "description": "spread peanut butter on one slice of bread",
             },
             {
                 "order": 3,
-                "description" : "spread jam on the other slice of bread",
+                "description": "spread jam on the other slice of bread",
             },
             {
                 "order": 4,
-                "description" : "put them together",
+                "description": "put them together",
             },
         ],
         "preparationTime": 5,
@@ -80,15 +90,15 @@ let data = {
         "steps": [
             {
                 "order": 1,
-                "description" : "cook rice and tuna",
+                "description": "cook rice and tuna",
             },
             {
                 "order": 2,
-                "description" : "add tuna",
+                "description": "add tuna",
             },
             {
                 "order": 3,
-                "description" : "boil and add brocolli to bowl",
+                "description": "boil and add brocolli to bowl",
             },
         ],
         "preparationTime": 15,
@@ -106,6 +116,11 @@ const successResponse = {
     "message": "Success",
 }
 
+const errorResponse = (msg) => ({
+    "status": 400,
+    "msg": msg
+})
+
 /**
  * Middleware
  */
@@ -113,13 +128,32 @@ app.use(helmet())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(bodyParser.json())
 
+/**
+ * Database Connection
+ */
+const sequelize = new Sequelize(process.env.DATABASE_URL)
+sequelize.authenticate().then(() => {
+    console.log('Connection has been established successfully.')
+})
+.catch((err) => {
+    console.error('Unable to connect to the database:', error)
+    process.exit(-1);
+})
+
+const { 
+    Ingredient_Index,
+    Recipe,
+    Recipe_Ingredient,
+    Recipe_Ingredient_Index,
+    RecipeStep
+} = initModels(sequelize);
 
 /**
  * Endpoints
  */
 
 app.get('/', (req, res) => {
-  res.send('There\'s nothing here')
+    res.send('There\'s nothing here')
 })
 
 /**
@@ -173,7 +207,7 @@ app.post('/recipes/add', (req, res) => {
     const recipe = {
         id: uuidv4(),
         name: req.body.name,
-        description: req.body.description ? req.body.description: '',
+        description: req.body.description ? req.body.description : '',
         ingredients: req.body.ingredients ? req.body.ingredients : [],
         steps: req.body.steps ? req.body.steps : [],
         preparationTime: req.body.preparationTime,
@@ -185,6 +219,33 @@ app.post('/recipes/add', (req, res) => {
     res.status(200).send(successResponse)
 })
 
+/**
+ * Get ingredients
+ */
+app.get('/ingredients/:page', async (req, res) => {
+    const page = Number(req.params.page);
+
+    if (!Number.isInteger(page) || page < 0 || page > 200) {
+        return res.status(400).send(errorResponse("Bad pagination index. Please enter a number between 0 and 200."));
+    }
+
+    const offset = page * 10;
+
+    const ingredients = await Ingredient_Index.findAndCountAll({
+        order: [
+            ['IngredientString', 'ASC']
+        ],
+        offset,
+        limit: 100
+    });
+
+    res.send({
+        page,
+        count: ingredients.length,
+        data: ingredients.rows
+    });
+})
+
 app.listen(port, () => {
-  console.log(`Cooking Recipe Suggestions App listening on port ${port}`)
+    console.log(`Cooking Recipe Suggestions App listening on port ${port}`)
 })
