@@ -29,7 +29,7 @@ function StrikeThroughText(props) {
     }
     return (
     <div className={`${classes.checklistItem} ${strikeThrough ? classes.strikeThrough : ""}`}>
-        <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>} onChange={handleCheckbox}/>
+        <Checkbox icon={<RadioButtonUnchecked/>} checkedIcon={<CheckCircle/>} onChange={handleCheckbox} color={"primary"}/>
         <Typography variant={variant}> {text}</Typography>
     </div>)
 }

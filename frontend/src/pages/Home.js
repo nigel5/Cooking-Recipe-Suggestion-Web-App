@@ -10,7 +10,6 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import RecipeCard from "../components/RecipeCard";
 import { testRecipeItems } from "../testData/testData";
 import RecipeCardList from "../components/RecipeCardList";
 

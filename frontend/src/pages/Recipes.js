@@ -1,5 +1,5 @@
-import { Avatar, Card, CardHeader, Checkbox, Divider, List, ListItem, ListItemText, Typography } from "@material-ui/core";
-import { AccessTimeFilled, CheckCircle, RadioButtonUnchecked, IosShare, Print, Restaurant } from '@mui/icons-material';
+import { Avatar, Card, CardHeader, Divider, List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import { AccessTimeFilled, IosShare, Print, Restaurant } from '@mui/icons-material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Image } from 'mui-image'
 import React from "react";
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
   },
   otherRecipesSection: {
-    width: "20%"
+    width: "30%"
   },
   ingredientsContainer: {
     display: "flex",
@@ -94,6 +94,14 @@ const useStyles = makeStyles((theme) => ({
   },
   suggestionsSection: {
     textAlign: "center"
+  },
+  recipeButtonItem: {
+    paddingLeft: "32px",
+    paddingRight: "32px",
+  },
+  headerSpacing: {
+    display:"flex",
+    justifyContent: "space-between",
   }
 
 }));
@@ -104,60 +112,61 @@ const Recipes = () => {
     <div>
     <div className={classes.sectionMargin}>
       <Typography variant="h1">Title of Food</Typography>
-      <div className = {classes.recipeHeader}>
-        <div className={classes.authorDetails} style={{paddingLeft: "0px"}}>
-                <Avatar style={{marginRight: "16px"}}>XD</Avatar>
-                <div>
-                  <Typography variant="subtitle2">Mico C</Typography>
-                  <Typography variant="caption">10 September 2022</Typography>
-                </div>
-        </div>
-        <Divider orientation="vertical" flexItem />
-        <div className={classes.authorDetails}>
-          <AccessTimeFilled style={{marginRight: "16px"}}/>
-          <div>
-            <Typography variant="subtitle2">
-              PREP TIME
-            </Typography>
+      <div className={classes.headerSpacing}>
+        <div className = {classes.recipeHeader}>
+          <div className={classes.authorDetails} style={{paddingLeft: "0px"}}>
+                  <Avatar style={{marginRight: "16px"}}>XD</Avatar>
+                  <div>
+                    <Typography variant="subtitle2">Mico C</Typography>
+                    <Typography variant="caption">10 September 2022</Typography>
+                  </div>
+          </div>
+          <Divider orientation="vertical" flexItem />
+          <div className={classes.authorDetails}>
+            <AccessTimeFilled style={{marginRight: "16px"}}/>
+            <div>
+              <Typography variant="subtitle2">
+                PREP TIME
+              </Typography>
+              <Typography variant="caption">
+                15 MIN
+              </Typography>
+            </div>
+          </div>
+          <Divider orientation="vertical" flexItem />
+          <div className={classes.authorDetails}>
+            <AccessTimeFilled style={{marginRight: "16px"}}/>
+            <div>
+              <Typography variant="subtitle2">
+                COOK TIME
+              </Typography>
+              <Typography variant="caption">
+                15 MIN
+              </Typography>
+            </div>
+          </div>
+          <Divider orientation="vertical" flexItem />
+          <div className={classes.authorDetails}>
+            <Restaurant style={{marginRight: "16px"}}/>
             <Typography variant="caption">
-              15 MIN
+              CHICKEN
             </Typography>
           </div>
         </div>
-        <Divider orientation="vertical" flexItem />
-        <div className={classes.authorDetails}>
-          <AccessTimeFilled style={{marginRight: "16px"}}/>
-          <div>
-            <Typography variant="subtitle2">
-              COOK TIME
-            </Typography>
-            <Typography variant="caption">
-              15 MIN
-            </Typography>
-          </div>
-        </div>
-        <Divider orientation="vertical" flexItem />
-        <div className={classes.authorDetails}>
-          <Restaurant style={{marginRight: "16px"}}/>
-          <Typography variant="caption">
-            CHICKEN
-          </Typography>
-        </div>
-        
         <div className ={classes.recipeButtons}>
-          <div>
-            <Avatar>
-              <Print/>
-            </Avatar>
-            <Typography>Print</Typography>
+            <div className={classes.recipeButtonItem}>
+              <Avatar>
+                <Print/>
+              </Avatar>
+              <Typography>Print</Typography>
+            </div>
+            <div className={classes.recipeButtonItem}>
+              <Avatar>
+                <IosShare/>
+              </Avatar>
+              <Typography>Share</Typography>
+            </div>
           </div>
-          <div>
-            <Avatar>
-              <IosShare/>
-            </Avatar>
-            <Typography>Share</Typography>
-          </div>
-        </div>
       </div>
       
     </div>

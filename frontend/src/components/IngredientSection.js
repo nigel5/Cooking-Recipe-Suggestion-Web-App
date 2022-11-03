@@ -1,6 +1,6 @@
 import {React} from "react"
 import PropTypes from 'prop-types';
-import {Divider, makeStyles, Typography } from "@material-ui/core";
+import {Divider, Typography } from "@material-ui/core";
 import StrikeThroughText from "./StrikeThroughText";
 
 IngredientSection.propTypes = {
