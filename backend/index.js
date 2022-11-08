@@ -107,19 +107,26 @@ let data = {
     }
 }
 
-const notFoundResponse = {
-    "status": 404,
-    "message": "Not found",
-}
-const successResponse = {
-    "status": 200,
-    "message": "Success",
+function sendNotFound(res) {
+    res.status(404).send({
+        "status": 404,
+        "message": "Not found",
+    })
 }
 
-const errorResponse = (msg) => ({
-    "status": 400,
-    "msg": msg
-})
+function sendBadRequest(res) {
+    res.status(400).send({
+        "status": 404,
+        "message": "Bad request",
+    })
+}
+
+function sendError(res, msg) {
+    res.send(500).send({
+        "status": 500,
+        "msg": msg
+    })
+}
 
 /**
  * Middleware
@@ -146,7 +153,7 @@ const {
     Recipe_Ingredient,
     Recipe_Ingredient_Index,
     RecipeStep
-} = initModels(sequelize);
+} = initModels(sequelize)
 
 /**
  * Endpoints
@@ -159,14 +166,20 @@ app.get('/', (req, res) => {
 /**
  * Get a recipe by Id
  */
-app.get('/recipes/:id', (req, res) => {
+app.get('/recipes/:id', async (req, res) => {
     const recipeId = req.params.id
-    if (recipeId in data) {
-        console.log(`Sending ${recipeId}`);
-        return res.send(data[recipeId])
+
+    if (!recipeId) {
+        return sendBadRequest(res)
     }
 
-    res.status(404).send(notFoundResponse);
+    const recipe = await Recipe.findByPk(recipeId)
+
+    if (recipe === null) {
+        return sendNotFound(res)
+    }
+
+    return res.send(recipe)
 })
 
 /**
@@ -223,10 +236,10 @@ app.post('/recipes/add', (req, res) => {
  * Get ingredients
  */
 app.get('/ingredients/:page', async (req, res) => {
-    const page = Number(req.params.page);
+    const page = Number(req.params.page)
 
-    if (!Number.isInteger(page) || page < 0 || page > 200) {
-        return res.status(400).send(errorResponse("Bad pagination index. Please enter a number between 0 and 200."));
+    if (!Number.isInteger(page) || page < 0 || page > 199) {
+        return sendError(res, "Bad pagination index. Please enter a number between 0 and 200.")
     }
 
     const offset = page * 10;
@@ -237,13 +250,13 @@ app.get('/ingredients/:page', async (req, res) => {
         ],
         offset,
         limit: 100
-    });
+    })
 
     res.send({
         page,
         count: ingredients.length,
         data: ingredients.rows
-    });
+    })
 })
 
 app.listen(port, () => {
