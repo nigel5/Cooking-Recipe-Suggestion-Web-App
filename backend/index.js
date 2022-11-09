@@ -18,10 +18,12 @@ const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 const app = express()
 const port = 3000
-const { Sequelize } = require('sequelize')
+const { Sequelize, Op } = require('sequelize')
 const initModels = require('./model/init-models')
 // const importRecipes = require('./util/importRecipes')
 // const importIngredients = require('./util/importIngredients')
+
+const SEARCH_BY_INGREDIENTS_1 = require('./db/queries').SEARCH_BY_RECIPE_NOT_LIMITED;
 
 /**
  * Test data
@@ -179,7 +181,45 @@ app.get('/recipes/:id', async (req, res) => {
         return sendNotFound(res)
     }
 
-    return res.send(recipe)
+    return res.status(200).send({
+        "status": 200,
+        recipe
+    })
+})
+
+/**
+ * Get recipes that are using, but not limited, to these ingredients
+ */
+app.get('/search', async (req, res) => {
+    let i = req.query.ingredient
+    if (!i) {
+        return sendBadRequest(res)
+    }
+
+    // 1 ingredient -> Convert to an array with one element only
+    if (!Array.isArray(i)) {
+        i = [i]
+    }
+
+    console.log(`Search for recipes with ingredients: ${i}`)
+
+    try {
+        const [results, _] = (await sequelize.query(SEARCH_BY_INGREDIENTS_1,
+            {
+                replacements: [i, i.length]
+            }
+        ))
+
+        console.log(results);
+
+        return res.status(200).send({
+            "status": 200,
+            "results": results
+        })
+    } catch (e) {
+        console.log(e)
+        return sendError(res, "Internal server error")
+    }
 })
 
 /**
