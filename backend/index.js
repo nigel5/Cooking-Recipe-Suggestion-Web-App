@@ -181,9 +181,17 @@ app.get('/recipes/:id', async (req, res) => {
         return sendNotFound(res)
     }
 
+    // Get the steps for the recipe
+    const steps = await RecipeStep.findAll({
+        where: {
+            RecipeID: recipeId
+        }
+    })
+
     return res.status(200).send({
         "status": 200,
-        recipe
+        recipe,
+        steps
     })
 })
 
