@@ -233,8 +233,25 @@ app.get('/search', async (req, res) => {
 /**
  * Get all recipes
  */
-app.get('/recipes', (req, res) => {
-    res.status(200).send(data);
+app.get('/recipes/all/:page', async (req, res) => {
+    const page = Number(req.params.page);
+
+    if (page === undefined || !Number.isInteger(page) || page < 0 || page > 199) {
+        return sendError(res, "Bad pagination index. Please enter a number between 0 and 200.")
+    }
+
+    const offset = page * 10
+
+    const recipes = await Recipe.findAndCountAll({
+        offset,
+        limit: 100
+    })
+
+    return res.status(200).send({
+        page,
+        count: recipes.length,
+        data: recipes.rows
+    })
 })
 
 /**
