@@ -11,9 +11,9 @@ module.exports = function (
     const { v4: uuidv4 } = require("uuid");
     const fs = require("fs");
     const getPrimaryKey = require("./getPrimaryKey");
-    const recipes = JSON.parse(fs.readFileSync("recipes.json", "utf8"));
+    const recipes = JSON.parse(fs.readFileSync("util/recipes.json", "utf8"));
     const ingredients = JSON.parse(
-        fs.readFileSync("Ingredient_Index.json", "utf8")
+        fs.readFileSync("util/ingredients.json", "utf8")
     );
 
     const IngredientToIngredientID = {};
