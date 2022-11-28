@@ -15,15 +15,17 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const { body, validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
+const redis = require("redis");
 const app = express();
 const port = 3000;
 const { Sequelize, Op } = require("sequelize");
 const initModels = require("./model/init-models");
-// const importRecipes = require('./util/importRecipes')
-// const importIngredients = require('./util/importIngredients')
+const getPrimaryKey = require("./util/getPrimaryKey");
 
 const SEARCH_BY_INGREDIENTS_1 =
   require("./db/queries").SEARCH_BY_RECIPE_NOT_LIMITED;
+
+const CACHE_TTL = 86400; // Seconds for cache entries to expire
 
 /**
  * Test data
@@ -128,6 +130,17 @@ function sendError(res, msg) {
   });
 }
 
+function getCacheKey(name, params, query, n) {
+  if (!name) return null;
+
+  let key = getPrimaryKey(name);
+  if (params) key += "-" + getPrimaryKey(params);
+  if (query) key += "-" + getPrimaryKey(query);
+  if (n) key += "-" + getPrimaryKey(n);
+
+  return key;
+}
+
 /**
  * Middleware
  */
@@ -138,6 +151,27 @@ app.use(
 app.use(bodyParser.json());
 
 /**
+ * Cache
+ */
+let redisClient;
+let redisClientReady = false;
+
+(async() => {
+  redisClient = redis.createClient();
+
+  redisClient.on("error", (e) => {
+    console.error(`error instantiating redis client ${e}. running with no cache`);
+  });
+
+  redisClient.on("connect", () => {
+    console.log("redis connection established");
+    redisClientReady = true;
+  });
+
+  await redisClient.connect();
+})();
+
+/**
  * Database Connection
  */
 const sequelize = new Sequelize(process.env.DATABASE_URL);
@@ -145,6 +179,7 @@ sequelize
   .authenticate()
   .then(() => {
     console.log("Connection has been established successfully.");
+
   })
   .catch((err) => {
     console.error("Unable to connect to the database:", error);
@@ -172,28 +207,56 @@ app.get("/", (req, res) => {
  */
 app.get("/recipes/:id", async (req, res) => {
   const recipeId = req.params.id;
+  let cached = false;
+  let results;
 
   if (!recipeId) {
     return sendBadRequest(res);
   }
 
-  const recipe = await Recipe.findByPk(recipeId);
+  const cacheKey = getCacheKey("recipes", recipeId);
+  try {
+    let cacheRes;
+    if (redisClientReady) {
+      cacheRes = await redisClient.get(cacheKey);
+    }
+    
+    if (cacheRes) {
+      cached = true;
+      results = JSON.parse(cacheRes);
+    } else {
+      const recipe = await Recipe.findByPk(recipeId);
 
-  if (recipe === null) {
-    return sendNotFound(res);
+      if (recipe === null) {
+        return sendNotFound(res);
+      }
+
+      // Get the steps for the recipe
+      const steps = await RecipeStep.findAll({
+        where: {
+          RecipeID: recipeId,
+        },
+      });
+
+      results = {
+        recipe,
+        steps,
+      };
+
+      // Store in cache
+      await redisClient.set(cacheKey, JSON.stringify(results));
+      await redisClient.expire(cacheKey, CACHE_TTL);
+    }
+  } catch (e) {
+    return sendError(res, "Internal server error");
   }
 
-  // Get the steps for the recipe
-  const steps = await RecipeStep.findAll({
-    where: {
-      RecipeID: recipeId,
-    },
-  });
 
   return res.status(200).send({
     status: 200,
-    recipe,
-    steps,
+    "recipe": results.recipe,
+    "steps": results.steps,
+    cached,
   });
 });
 
