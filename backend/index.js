@@ -322,6 +322,8 @@ app.get("/search", async (req, res) => {
  * If no page query is written then it will throw an error
  */
 app.get("/recipes", async (req, res) => {
+  let cached = false;
+  let results;
   const page = Number(req.query.page);
   let pageSize = Number(req.query.pageSize);
 
@@ -344,16 +346,35 @@ app.get("/recipes", async (req, res) => {
 
   const offset = page * pageSize;
 
-  const recipes = await Recipe.findAndCountAll({
-    order: [["RecipeID", "ASC"]],
-    offset,
-    limit: pageSize,
-  });
+  const cacheKey = getCacheKey("recipes-pages-get", offset.toString());
+  try {
+    let cacheRes;
+    if (redisClientReady) {
+      cacheRes = await redisClient.get(cacheKey);
+    }
+
+    if (cacheRes) {
+      cached = true;
+      results = JSON.parse(cacheRes);
+    } else {
+      results = await Recipe.findAndCountAll({
+        order: [["RecipeID", "ASC"]],
+        offset,
+        limit: pageSize,
+      });
+
+      setCacheEntry(cacheKey, JSON.stringify(results));
+    }
+  } catch (e) {
+    console.error(e);
+    return sendError(res, "Internal server error");
+  }
 
   res.send({
     page,
-    count: recipes.length,
-    data: recipes.rows,
+    count: results.length,
+    data: results.rows,
+    cached,
   });
 });
 
@@ -404,6 +425,9 @@ app.post("/recipes/add", (req, res) => {
  * Get ingredients
  */
 app.get("/ingredients/:page", async (req, res) => {
+  let cached = false;
+  let results;
+
   const page = Number(req.params.page);
 
   if (!Number.isInteger(page) || page < 0 || page > 199) {
@@ -415,16 +439,36 @@ app.get("/ingredients/:page", async (req, res) => {
 
   const offset = page * 10;
 
-  const ingredients = await Ingredient_Index.findAndCountAll({
-    order: [["IngredientString", "ASC"]],
-    offset,
-    limit: 100,
-  });
+  const cacheKey = getCacheKey("ingredients-page", page.toString(), offset.toString());
+  try {
+    let cacheRes;
+    if (redisClientReady) {
+      cacheRes = await redisClient.get(cacheKey);
+    }
+
+    if (cacheRes) {
+      cached = true;
+      results = JSON.parse(cacheRes);
+    } else {
+      results = await Ingredient_Index.findAndCountAll({
+        order: [["IngredientString", "ASC"]],
+        offset,
+        limit: 100,
+      });
+
+      setCacheEntry(cacheKey, JSON.stringify(results));
+    }
+  } catch (e) {
+    console.error(e);
+    return sendError(res, "Internal server error");
+  }
+
 
   res.send({
     page,
-    count: ingredients.length,
-    data: ingredients.rows,
+    count: results.length,
+    data: results.rows,
+    cached,
   });
 });
 
