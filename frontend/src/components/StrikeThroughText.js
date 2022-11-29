@@ -14,13 +14,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-StrikeThroughText.propTypes = {
-    //refactor when ingredientItem has ID
-    text: PropTypes.string,
-    variant: PropTypes.string,
-}
 
-function StrikeThroughText(props) {
+
+const StrikeThroughText = (props) => {
+    StrikeThroughText.propTypes = {
+        //refactor when ingredientItem has ID
+        text: PropTypes.string,
+        variant: PropTypes.string,
+    }
     let [strikeThrough, setStrikeThrough] = useState(false);
     let {text, variant} = props;
     let classes = useStyles();

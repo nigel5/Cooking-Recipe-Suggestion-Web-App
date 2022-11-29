@@ -1,21 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, Typography } from "@material-ui/core";
-import IngredientSection from "./IngredientSection";
-
-IngredientSectionList.propTypes = {
-  //refactor when ingredientItem has ID
-  recipeAndIngredientsList: PropTypes.arrayOf(
-    PropTypes.shape({
-      recipeName: PropTypes.string,
-      ingredientList: PropTypes.arrayOf(
-        PropTypes.shape({
-          ingredientName: PropTypes.string,
-        })
-      ),
-    })
-  ),
-};
+import { Divider, makeStyles, Typography } from "@material-ui/core";
+import StrikeThroughText from "../StrikeThroughText";
 
 const useStyles = makeStyles((theme) => ({
   ingredientsSection: {
@@ -32,25 +18,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IngredientSectionList(props) {
+const IngredientSectionList = (props) => {
+  IngredientSectionList.propTypes = {
+    //refactor when ingredientItem has ID
+    recipeAndIngredientsList: PropTypes.shape({
+        recipeName: PropTypes.string,
+        ingredientList: PropTypes.arrayOf(
+          PropTypes.shape({
+            RecipeIngredientID: PropTypes.string,
+            RawIngredient: PropTypes.string,
+            RecipeID: PropTypes.string,
+          })
+        ),
+      })
+  };
   let classes = useStyles();
-  let { recipeAndIngredientsList } = props;
+  let { recipeName, ingredientList } = props;
   return (
     <div className={classes.ingredientsSection}>
       <Typography variant="h4" className={classes.ingredientsHeader}>
         Ingredients
       </Typography>
       <div className={classes.recipeIngredients}>
-        {recipeAndIngredientsList.map((recipeAndIngredients, index) => {
-          return (
-            <div key={index} className={classes.ingredientsSubsection}>
-              <IngredientSection recipeAndIngredients={recipeAndIngredients} />
+        {
+            <div className={classes.ingredientsSubsection}>
+              <div>
+                <Typography variant="h5">{recipeName}</Typography>
+                {ingredientList.map((ingredient) => {
+                  return (
+                    <div key={ingredient.RecipeIngredientID}>
+                      <StrikeThroughText
+                        text={ingredient.RawIngredient}
+                        variant={"body1"}
+                      />
+                      <Divider />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          );
-        })}
+            }
       </div>
     </div>
   );
-}
+};
 
 export default IngredientSectionList;

@@ -23,7 +23,7 @@ const App = () => {
         <div style={{ height: "80px" }} />
         <Routes>
           <Route path="/ingredients" element={<Ingredients />}></Route>
-          <Route path="/recipes" element={<Recipes />}></Route>
+          <Route path="/recipes/:recipeId" element={<Recipes />}></Route>
           <Route path="/" element={<Home />}></Route>
         </Routes>
       </div>

@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import RecipeCard from "./RecipeCard";
 import { makeStyles } from "@material-ui/core";
 
-RecipeCardList.propTypes = {
-    recipeCardList: PropTypes.array
-}
 
 const useStyles = makeStyles((theme) => ({
     recipesList: {
@@ -16,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-function RecipeCardList(props) {
+const RecipeCardList = (props) => {
+    RecipeCardList.propTypes = {
+        recipeCardList: PropTypes.array
+    }
     let classes = useStyles();
     let {recipeCardList} = props;
     return (

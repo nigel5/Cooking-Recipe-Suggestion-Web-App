@@ -2,6 +2,7 @@ import {
   Avatar,
   Card,
   CardHeader,
+  CircularProgress,
   Divider,
   List,
   ListItem,
@@ -16,7 +17,8 @@ import {
 } from "@mui/icons-material";
 import { makeStyles } from "@material-ui/core/styles";
 import { Image } from "mui-image";
-import React from "react";
+import { React, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   recipeAndIngredientsList,
   testRecipeItems,
@@ -24,6 +26,8 @@ import {
 import RecipeCardList from "../components/RecipeCardList";
 import IngredientSectionList from "../components/recipes/IngredientSectionList";
 import StrikeThroughText from "../components/StrikeThroughText";
+import { getRecipesById, getRecipesByPage } from "../services/dataService";
+import DirectionSectionList from "../components/DirectionsSectionList";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -64,22 +68,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "15px",
     height: "100%",
     padding: "32px",
-  },
-  directionsChecklistItem: {
     display: "flex",
-    alignItems: "center",
-  },
-  directionsDescription: {
-    padding: "24px 24px 48px 24px",
-  },
-  directionsHeader: {
-    marginBottom: "32px",
-  },
-  directionItem: {
-    marginBottom: "48px",
-  },
-  directionsSection: {
-    width: "60%",
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   otherRecipesSection: {
     width: "30%",
@@ -122,11 +113,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Recipes = () => {
+  const params = useParams();
+  const [recipeData, setRecipeData] = useState({});
+  const [directionSteps, setDirectionSteps] = useState({});
+  const [ingredientList, setIngredientList] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const { recipeId } = params;
+    getRecipesById(recipeId).then((data) => {
+      setRecipeData(data.recipe);
+      setDirectionSteps(data.steps);
+      setIngredientList(data.ingredients);
+      setIsLoading(false);
+      console.log(directionSteps);
+    });
+  }, [params]);
+
   const classes = useStyles();
-  return (
+
+  return isLoading ? (
+    <CircularProgress />
+  ) : (
     <div>
       <div className={classes.sectionMargin}>
-        <Typography variant="h1">Title of Food</Typography>
+        <Typography variant="h1">{recipeData.Name}</Typography>
         <div className={classes.headerSpacing}>
           <div className={classes.recipeHeader}>
             <div
@@ -144,7 +155,7 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">PREP TIME</Typography>
-                <Typography variant="caption">15 MIN</Typography>
+                <Typography variant="caption">{recipeData.Prep}</Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
@@ -152,13 +163,13 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">COOK TIME</Typography>
-                <Typography variant="caption">15 MIN</Typography>
+                <Typography variant="caption">{recipeData.CookTime ?? recipeData.PrepTime}</Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
             <div className={classes.authorDetails}>
               <Restaurant style={{ marginRight: "16px" }} />
-              <Typography variant="caption">CHICKEN</Typography>
+              <Typography variant="caption">{recipeData.Cuisine}</Typography>
             </div>
           </div>
           <div className={classes.recipeButtons}>
@@ -179,77 +190,55 @@ const Recipes = () => {
       </div>
       <div className={`${classes.imageSection} ${classes.sectionMargin}`}>
         <div className={classes.recipePhoto}>
-          <Image src="https://img.freepik.com/free-photo/flat-lay-batch-cooking-composition_23-2148765597.jpg?w=2000"></Image>
+          <Image src={recipeData.ImgLink}></Image>
         </div>
         <div className={classes.recipeMacros}>
           <Card className={classes.recipeMacrosCard}>
-            <CardHeader title={"Nutrition Information "} />
-            <List>
-              <ListItem>
-                <ListItemText primary="Calories" />
-                <span>
-                  <Typography>Test</Typography>
-                </span>
-              </ListItem>
-              <Divider light />
-              <ListItem>
-                <ListItemText primary="Total Fat" />
-                <span>
-                  <Typography>Test</Typography>
-                </span>
-              </ListItem>
-              <Divider light />
-              <ListItem>
-                <ListItemText primary="Protein" />
-                <span>
-                  <Typography>Test</Typography>
-                </span>
-              </ListItem>
-              <Divider light />
-              <ListItem>
-                <ListItemText primary="Carbohydrate" />
-                <span>
-                  <Typography>Test</Typography>
-                </span>
-              </ListItem>
-              <Divider light />
-              <ListItem>
-                <ListItemText primary="Cholesterol" />
-                <span>
-                  <Typography>Test</Typography>
-                </span>
-              </ListItem>
-            </List>
             <div>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </Typography>
+              <CardHeader title={"Nutrition Information "} />
+              <List>
+                <ListItem>
+                  <ListItemText primary="Calories" />
+                  <span>
+                    <Typography>{recipeData.Calories}</Typography>
+                  </span>
+                </ListItem>
+                <Divider light />
+                <ListItem>
+                  <ListItemText primary="Total Fat" />
+                  <span>
+                    <Typography>{recipeData.Fat}</Typography>
+                  </span>
+                </ListItem>
+                <Divider light />
+                <ListItem>
+                  <ListItemText primary="Protein" />
+                  <span>
+                    <Typography>{recipeData.Protein}</Typography>
+                  </span>
+                </ListItem>
+                <Divider light />
+                <ListItem>
+                  <ListItemText primary="Carbohydrate" />
+                  <span>
+                    <Typography>{recipeData.Carbs}</Typography>
+                  </span>
+                </ListItem>
+              </List>
             </div>
+            <div>{recipeData.Description}</div>
           </Card>
         </div>
       </div>
       <div className={classes.sectionMargin}>
-        <Typography variant="subtitle1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Typography>
+        <Typography variant="subtitle1">{recipeData.Description}</Typography>
       </div>
       <div
         className={`${classes.sectionMargin} ${classes.ingredientsContainer}`}
       >
         <IngredientSectionList
-          recipeAndIngredientsList={recipeAndIngredientsList}
+          recipeName={recipeData.Name}
+          ingredientList={ingredientList}
         />
         <div className={classes.otherRecipesSection}>
           <Typography variant="h4" className={classes.otherRecipesHeader}>
@@ -258,7 +247,7 @@ const Recipes = () => {
           <Card className={classes.otherRecipesCardItem}>
             <div className={classes.otherRecipesItem}>
               <div className={classes.otherRecipesItemPhoto}>
-                <Image src="https://images-gmi-pmc.edge-generalmills.com/a7d7f227-8d99-4ebd-b224-f5338c0f0749.jpg"></Image>
+                <Image src={recipeData.ImgLink}></Image>
               </div>
               <div className={classes.otherRecipesItemDescription}>
                 <Typography variant="h5">Meatballs and Pasta</Typography>
@@ -291,89 +280,10 @@ const Recipes = () => {
         </div>
       </div>
 
-      <div className={`${classes.sectionMargin} ${classes.directionsSection}`}>
-        <Typography variant="h4" className={classes.directionsHeader}>
-          Directions
-        </Typography>
-        <div className={classes.directionItem}>
-          <div className={classes.directionsChecklistItem}>
-            <StrikeThroughText
-              variant={"h5"}
-              text={"1. Lorem ipsum dolor sit amet"}
-            />
-          </div>
-          <div className={classes.directionsDescription}>
-            <Typography variant="body1">
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
-              non numquam eius modi tempora incidunt ut labore et dolore magnam
-              aliquam quaerat voluptatem.
-            </Typography>
-          </div>
-          <Divider />
-        </div>
-
-        <div className={classes.directionItem}>
-          <div className={classes.directionsChecklistItem}>
-            <StrikeThroughText
-              variant={"h5"}
-              text={"2. Lorem ipsum dolor sit amet"}
-            />
-          </div>
-          <div className={classes.directionsDescription}>
-            <Typography variant="body1">
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
-              non numquam eius modi tempora incidunt ut labore et dolore magnam
-              aliquam quaerat voluptatem.
-            </Typography>
-          </div>
-          <Divider />
-        </div>
-
-        <div className={classes.directionItem}>
-          <div className={classes.directionsChecklistItem}>
-            <StrikeThroughText
-              variant={"h5"}
-              text={"3. Lorem ipsum dolor sit amet"}
-            />
-          </div>
-          <div className={classes.directionsDescription}>
-            <Typography variant="body1">
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
-              non numquam eius modi tempora incidunt ut labore et dolore magnam
-              aliquam quaerat voluptatem.
-            </Typography>
-          </div>
-          <Divider />
-        </div>
-
-        <div className={classes.directionItem}>
-          <div className={classes.directionsChecklistItem}>
-            <StrikeThroughText
-              variant={"h5"}
-              text={"4. Lorem ipsum dolor sit amet"}
-            />
-          </div>
-          <div className={classes.directionsDescription}>
-            <Typography variant="body1">
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
-              non numquam eius modi tempora incidunt ut labore et dolore magnam
-              aliquam quaerat voluptatem.
-            </Typography>
-          </div>
-          <Divider />
-        </div>
+      <div className={`${classes.sectionMargin}`}>
+        <DirectionSectionList
+          directionsList={directionSteps}
+        ></DirectionSectionList>
       </div>
       <div>
         <div className={classes.suggestionsSection}>
