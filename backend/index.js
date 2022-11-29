@@ -472,11 +472,58 @@ app.get("/ingredients/:page", async (req, res) => {
   }
 
 
-  res.send({
+  res.status(200).send({
+    status: 200,
     page,
     count: results.length,
     data: results.rows,
     cached,
+  });
+});
+
+/*
+ * Cuisine
+*/
+app.get("/cuisine/:name", async (req, res) => {
+  let cached = false;
+  let results;
+});
+
+/*
+ * Get types of cuisines
+ */
+app.get("/cuisine", async (req, res) => {
+  let cached = false;
+  let results;
+
+  const cacheKey = getCacheKey("cuisine-names");
+  try {
+    let cacheRes;
+    if (redisClientReady) {
+        cacheRes = await redisClient.get(cacheKey);
+    }
+
+    if (cacheRes) {
+      results = JSON.parse(cacheRes);
+      cached = true;
+    } else {
+      const [temp, _] = await sequelize.query("SELECT DISTINCT (\"Cuisine\") FROM \"Recipe\"", { plain: false });
+      results = temp;
+
+      if (!results || results.length === 0) {
+        results = {}
+      } else {
+        setCacheEntry(cacheKey, JSON.stringify(results));
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    return sendError(res, "Internal server error");
+  }
+
+  res.status(200).send({
+    status: 200,
+    cuisines: results
   });
 });
 
