@@ -245,8 +245,16 @@ app.get("/recipes/:id", async (req, res) => {
         },
       });
 
+      // Get the ingredients of the recipe
+      const ingredients = await Recipe_Ingredient.findAll({
+        where: {
+          RecipeID: recipeId,
+        },
+      });
+
       results = {
         recipe,
+        ingredients,
         steps,
       };
 
@@ -256,11 +264,11 @@ app.get("/recipes/:id", async (req, res) => {
     return sendError(res, "Internal server error");
   }
 
-
   return res.status(200).send({
     status: 200,
     "recipe": results.recipe,
     "steps": results.steps,
+    "ingredients": results.ingredients,
     cached,
   });
 });
