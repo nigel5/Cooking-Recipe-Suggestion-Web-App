@@ -5,12 +5,12 @@ import {
   Routes,
   Outlet,
   Route,
-  Link,
 } from "react-router-dom";
 import Navbar from "./components/homepage/Navbar";
 import Ingredients from "./pages/Ingredients";
 import Home from "./pages/Home";
 import Recipes from "./pages/Recipes";
+import RecipesList from "./pages/RecipesList";
 
 const App = () => {
   return (
@@ -24,6 +24,7 @@ const App = () => {
         <Routes>
           <Route path="/ingredients" element={<Ingredients />}></Route>
           <Route path="/recipes/:recipeId" element={<Recipes />}></Route>
+          <Route path="/recipes" element={<RecipesList />}></Route>
           <Route path="/" element={<Home />}></Route>
         </Routes>
       </div>

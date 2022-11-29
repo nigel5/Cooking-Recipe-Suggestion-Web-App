@@ -185,7 +185,7 @@ const Home = () => {
       <div className={classes.section}>
         <div className={classes.recipesHeader}>
           <Typography variant="h3" gutterBottom>
-            Simple and tasy recipes
+            Simple and Tasty Recipes
           </Typography>
           <Typography variant="body1" gutterBottom>
             Find new and easy recipes easily

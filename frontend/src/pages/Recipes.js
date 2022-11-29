@@ -230,9 +230,6 @@ const Recipes = () => {
           </Card>
         </div>
       </div>
-      <div className={classes.sectionMargin}>
-        <Typography variant="subtitle1">{recipeData.Description}</Typography>
-      </div>
       <div
         className={`${classes.sectionMargin} ${classes.ingredientsContainer}`}
       >
