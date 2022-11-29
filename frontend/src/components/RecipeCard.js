@@ -1,6 +1,8 @@
-import { Card, CardActions, CardContent, CardMedia, Chip, makeStyles, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia, Chip, makeStyles, Typography } from "@material-ui/core";
 import {React} from "react";
 import PropTypes from 'prop-types';    
+import { Link } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     recipeCard: {
@@ -8,14 +10,33 @@ const useStyles = makeStyles((theme) => ({
         margin: "40px",
         borderRadius: "10%",
       },
-      recipeCardImg: {
-        height: "275px",
-        objectFit: "cover",
-      },
-      recipeCardContent: {
-        paddingBottom: "36px",
-      }
+    recipeCardImg: {
+      height: "275px",
+      objectFit: "cover",
+    },
+    recipeCardContent: {
+      paddingBottom: "36px",
+    },
+
+    // actions: {
+    //   display: "flex",
+    //   justifyContent: "space-between",
+
+    // },
+    labelChip: {
+      marginRight: "24px",
+    },
+    viewRecipeButton: {
+      width: "100%"
+    },
+    viewRecipeLink: {
+      textDecoration: "none",
+      width: "100%",
+    }
+
 }));
+
+const recipeLink = "/recipes";
 
 const RecipeCard = (props) => {
   RecipeCard.propTypes = {
@@ -29,22 +50,31 @@ const RecipeCard = (props) => {
 }
     const classes = useStyles();
     let {recipeCardItem} = props
-    return (<Card className={classes.recipeCard}>
-            <CardMedia
-                className={classes.recipeCardImg}
-                component="img"
-                image = {recipeCardItem.recipeImageLink}
-            />
-            <CardContent className={classes.recipeCardContent}>
-              <Typography gutterBottom variant="h5" align="left">
-                {recipeCardItem.recipeName}
-              </Typography>
-              <CardActions>
-                <Chip label={`⏰ ${recipeCardItem.timeLabel}`}/>
-                <Chip label={`🍴 ${recipeCardItem.recipeType}`} />
-            </CardActions>
-            </CardContent>
-          </Card>)
+    return (
+      <Card className={classes.recipeCard}>
+        <CardMedia
+            className={classes.recipeCardImg}
+            component="img"
+            image = {recipeCardItem.ImgLink}
+        />
+        <CardContent className={classes.recipeCardContent}>
+          <div>
+            <Typography gutterBottom variant="h5" align="left">
+              {recipeCardItem.Name}
+            </Typography>
+          </div>
+          <CardActions className={classes.actions}>
+            <Chip label={"⏰ " + (recipeCardItem.CookTime ?? recipeCardItem.Prep) }/>
+            <Chip label={`🍴 ${recipeCardItem.Cuisine}`} />
+          </CardActions>
+          <CardActions>
+              <Link className={classes.viewRecipeLink} to={`${recipeLink}/${recipeCardItem.RecipeID}`}>
+                <Button className={classes.viewRecipeButton} variant="outlined" size="medium">View Recipe</Button>
+              </Link>
+          </CardActions>
+        </CardContent>
+      </Card>
+    )
 }
 
 export default RecipeCard;

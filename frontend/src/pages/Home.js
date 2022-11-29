@@ -1,4 +1,5 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -6,12 +7,14 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Chip,
   makeStyles,
   Typography,
 } from "@material-ui/core";
 import { testRecipeItems } from "../testData/testData";
 import RecipeCardList from "../components/RecipeCardList";
+import { getRecipesById, getRecipesByPage } from "../services/dataService";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   trendingCard: {
     margin: "40px",
-    height: "640px",
+    height: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -33,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 50px 0 50px",
   },
   authorDetails: {
-    display: "inline-flex",
     marginTop: "104px",
   },
   cardChips: {
@@ -57,43 +59,67 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "150px",
     textAlign: "center",
   },
+  viewRecipeButton: {
+    width: "100%",
+  },
+  viewRecipeLink: {
+    textDecoration: "none",
+  }
 }));
 
 const Home = () => {
   const classes = useStyles();
+  const recipeLink = "/recipes";
+  // const params = useParams();
+  const [featuredRecipeData, setFeaturedRecipeData] = useState({});
+  const [recipeList, setRecipeList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // const {recipeId} = params;
+    getRecipesById("air-fryer-pakoras").then((data) => {
+      setFeaturedRecipeData(data.recipe);
+      // setDirectionSteps(data.steps);
+      setIsLoading(false);
+    });
+
+    getRecipesByPage(1).then((data) => {
+      setRecipeList(data.data);
+    });
+  }, []);
 
   return (
-    <React.Fragment>
+    isLoading ? <CircularProgress /> :
     <div className={classes.body}>
       <div className={classes.trendingSection}>
         <Card className={classes.trendingCard} raised>
           <CardContent className={classes.cardContent}>
             <Chip label="🔥 Hot Recipe" />
             <Typography gutterBottom variant="h2" component="div">
-              Sweet Chili Chicken Wings
+              { featuredRecipeData.Name }
             </Typography>
             <Typography gutterBottom variant="body2" color="text.secondary">
-              These Keto Sweet Chili, Sticky Asian chicken wings combine two of my favorite 
-              things: Asian flavors and wings! Using my air fryer wings or crispy baked 
-              chicken wings with my low-carb sweet chili sauce, these are a great appetizer 
-              and beat take-out any time!
+              { featuredRecipeData.Description }
             </Typography>
             <CardActions className={classes.cardChips}>
-              <Chip label="⏰ 30 Minutes" />
-              <Chip label="🐔 Chicken" />
+              <Chip label={"⏰ " + (featuredRecipeData.CookTime ?? featuredRecipeData.Prep) } />
+              <Chip label={"🍴 " + featuredRecipeData.Cuisine} />
             </CardActions>
             <div className={classes.authorDetails}>
-              <Avatar style={{marginRight: "16px"}}>AD</Avatar>
+              {/* <Avatar style={{marginRight: "16px"}}>AD</Avatar>
               <div>
                 <Typography variant="caption">Alton D</Typography>
                 <Typography variant="caption" paragraph>10 September 2022</Typography>
-              </div>
+              </div> */}
+              <Link className={classes.viewRecipeLink} to={`${recipeLink}/air-fryer-pakoras`}>
+                <Button className={classes.viewRecipeButton} variant="contained" >View Recipe</Button> 
+              </Link>
             </div>
           </CardContent>
           <CardMedia
             className={classes.mainCardImg}
             component="img"
-            image="https://c9u8e9q4.rocketcdn.me/wp-content/uploads/2020/01/Keto-Sweet-Chili-Wings-1-square.jpg"
+            image={featuredRecipeData.ImgLink}
           />
         </Card>
       </div>
@@ -166,11 +192,10 @@ const Home = () => {
           </Typography>  
         </div>
         <div>
-          <RecipeCardList recipeCardList={testRecipeItems}/>
+          <RecipeCardList recipeCardList={recipeList}/>
         </div>
       </div>
     </div>
-    </React.Fragment>
   );
 };
 
