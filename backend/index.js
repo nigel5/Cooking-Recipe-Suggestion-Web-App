@@ -18,7 +18,7 @@ const { v4: uuidv4 } = require("uuid");
 const redis = require("redis");
 const app = express();
 const port = 3000;
-const { Sequelize, Op } = require("sequelize");
+const { Sequelize, Op, QueryTypes } = require("sequelize");
 const initModels = require("./model/init-models");
 const getPrimaryKey = require("./util/getPrimaryKey");
 
@@ -387,21 +387,6 @@ app.get("/recipes", async (req, res) => {
 });
 
 /**
- * Add ingredient to a recipe
- */
-//  app.put('/recipes/:id/ingredients', body('name').isString(), (req, res) => {
-//     const ingredient = {
-//         "id": uuidv4(),
-//         "name": req.body.name
-//     }
-
-//     const recipeId = req.params.id
-//     if (recipeId in data) {
-//         data[recipeId].ingredients.append(ingredient)
-//     }
-// })
-
-/**
  * Delete a recipe
  */
 app.delete("/recipes/:id", (req, res) => {
@@ -482,11 +467,52 @@ app.get("/ingredients/:page", async (req, res) => {
 });
 
 /*
- * Cuisine
+ * Cuisine recipes
 */
 app.get("/cuisine/:name", async (req, res) => {
   let cached = false;
   let results;
+
+  const cuisineName = req.params.name;
+  if (!cuisineName) {
+    return sendBadRequest(res);
+  }
+
+  const cacheKey = getCacheKey("cuisine-recipes", cuisineName);
+  try {
+    let cacheRes;
+    if (redisClientReady) {
+      cacheRes = await redisClient.get(cacheKey);
+    }
+
+    if (cacheRes) {
+      results = JSON.parse(cacheRes);
+      cached = true;
+    } else {
+      let _;
+      [results, _] = await sequelize.query(
+        "SELECT * FROM \"public\".\"Recipe\" as \"Recipe\" WHERE \"Recipe\".\"Cuisine\" iLIKE ?", {
+          replacements: [cuisineName],
+          plain: false,
+        }
+      )
+
+      if (results === null || results.length == 0) {
+        return sendNotFound(res);
+      }
+
+      setCacheEntry(cacheKey, JSON.stringify(results));
+    }
+  } catch (e) {
+    console.error(e);
+    return sendError(res, "Internal server error");
+  }
+
+  res.status(200).send({
+    status: 200,
+    "recipes": results,
+    cached,
+  });
 });
 
 /*
