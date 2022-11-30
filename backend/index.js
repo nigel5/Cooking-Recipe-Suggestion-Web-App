@@ -210,6 +210,26 @@ app.get("/", (req, res) => {
 });
 
 /**
+ * Get random recipe
+ */
+app.get("/recipes/random", async (req, res) => {
+  let cached = false;
+  const result = await Recipe.findOne({ 
+    order: sequelize.random()
+  });
+
+  if (!result) {
+    return sendNotFound(res);
+  }
+
+  return res.status(200).send({
+    status: 200,
+    recipe: result,
+    cached,
+  });
+});
+
+/**
  * Get a recipe by Id
  */
 app.get("/recipes/:id", async (req, res) => {
