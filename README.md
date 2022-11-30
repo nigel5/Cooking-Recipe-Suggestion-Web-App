@@ -9,6 +9,14 @@ A web application that seeks to provide cooking recipes to users based on the in
 3. `cd` into the cloned repo
 4. `git remote add upstream https://github.com/DeluxeViper/Cooking-Recipe-Suggestion-Web-App.git`
 
+This repository is divided into two subprojects, frontend and backend.
+
+### Run development server
+1. Start backend
+    a. Please see backend/README.md for additional information.
+2. Start frontend. It will ask to run on a different port because the backend is on the same port -> 'Y'
+    b. Please see frontend/README.md for additional information.
+
 ### Development Practices
 
 ###### Working with a feature branch
