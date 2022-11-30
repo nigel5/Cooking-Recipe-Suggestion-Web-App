@@ -26,7 +26,7 @@ import {
 import RecipeCardList from "../components/RecipeCardList";
 import IngredientSectionList from "../components/recipes/IngredientSectionList";
 import StrikeThroughText from "../components/StrikeThroughText";
-import { getRecipesById, getRecipesByPage } from "../services/dataService";
+import { getRecipesByCuisine, getRecipesById, getRecipesByPage } from "../services/dataService";
 import DirectionSectionList from "../components/DirectionsSectionList";
 
 const useStyles = makeStyles((theme) => ({
@@ -117,6 +117,7 @@ const Recipes = () => {
   const [recipeData, setRecipeData] = useState({});
   const [directionSteps, setDirectionSteps] = useState({});
   const [ingredientList, setIngredientList] = useState({});
+  const [suggestedRecipesList, setSuggestedRecipesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -126,8 +127,13 @@ const Recipes = () => {
       setDirectionSteps(data.steps);
       setIngredientList(data.ingredients);
       setIsLoading(false);
+      getRecipesByCuisine(data.recipe.Cuisine).then((data) => {
+        setSuggestedRecipesList(data.recipes);
+        console.log(suggestedRecipesList);
+      });
       console.log(directionSteps);
     });
+    
   }, [params]);
 
   const classes = useStyles();
@@ -140,7 +146,7 @@ const Recipes = () => {
         <Typography variant="h1">{recipeData.Name}</Typography>
         <div className={classes.headerSpacing}>
           <div className={classes.recipeHeader}>
-            <div
+            {/* <div
               className={classes.authorDetails}
               style={{ paddingLeft: "0px" }}
             >
@@ -150,7 +156,7 @@ const Recipes = () => {
                 <Typography variant="caption">10 September 2022</Typography>
               </div>
             </div>
-            <Divider orientation="vertical" flexItem />
+            <Divider orientation="vertical" flexItem /> */}
             <div className={classes.authorDetails}>
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
@@ -230,7 +236,7 @@ const Recipes = () => {
           </Card>
         </div>
       </div>
-      <div
+      {/* <div
         className={`${classes.sectionMargin} ${classes.ingredientsContainer}`}
       >
         <IngredientSectionList
@@ -275,7 +281,7 @@ const Recipes = () => {
             </div>
           </Card>
         </div>
-      </div>
+      </div> */}
 
       <div className={`${classes.sectionMargin}`}>
         <DirectionSectionList
@@ -287,7 +293,7 @@ const Recipes = () => {
           <Typography variant="h4">You may also like</Typography>
         </div>
         <div>
-          <RecipeCardList recipeCardList={testRecipeItems} />
+          <RecipeCardList recipeCardList={suggestedRecipesList} />
         </div>
       </div>
     </div>

@@ -8,7 +8,19 @@ import { Pagination } from "@mui/material";
 import { getRecipesByPage } from "../services/dataService";
 import RecipeCardList from "../components/RecipeCardList";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  title: {
+    textAlign: "center",
+  },
+  container: {
+    marginTop: "40px",
+    marginBottom: "40px",
+  },
+  paginationBarContainer: {
+    display: "flex",
+    justifyContent: "center",
+  }
+}));
 
 const RecipesList = () => {
   let classes = useStyles();
@@ -27,10 +39,15 @@ const RecipesList = () => {
   return isLoading ? (
     <CircularProgress />
   ) : (
-    <div>
-    <Typography variant="h4">Recipes</Typography>
+    <div className={classes.container}>
+      <Typography className={classes.title} variant="h2">
+        All Recipes
+      </Typography>
+      <Typography className={classes.title} variant="h5" gutterBottom>
+          Find new and easy recipes easily
+      </Typography> 
       <RecipeCardList recipeCardList={recipeCardList} />
-      <div>
+      <div className={classes.paginationBarContainer}>
         <Pagination
           count={143}
           color="primary"

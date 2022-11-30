@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "48px",
       },
       directionsSection: {
-        width: "60%",
+        // width: "60%",
       },
 }));
 

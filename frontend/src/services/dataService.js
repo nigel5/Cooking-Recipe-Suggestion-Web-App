@@ -1,4 +1,5 @@
 const getRecipesEndpoint = '/recipes'
+const getRecipesByCuisineEndpoint = '/cuisine'
 
 const getRecipesByPage = (page) => {
     return new Promise((resolve, reject) => {
@@ -29,4 +30,32 @@ const getRecipesById = (id) => {
     })
 }
 
-export {getRecipesByPage, getRecipesById}
+const getRandomRecipe = () => {
+    return new Promise((resolve, reject) => {
+        fetch(`${getRecipesEndpoint}/random`)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+           resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    })
+}
+
+const getRecipesByCuisine = (cuisineName) => {
+    return new Promise((resolve, reject) => {
+        fetch(`${getRecipesByCuisineEndpoint}/${cuisineName}`)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+           resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    })
+}
+
+export {getRecipesByPage, getRecipesById, getRandomRecipe, getRecipesByCuisine}

@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { testRecipeItems } from "../testData/testData";
 import RecipeCardList from "../components/RecipeCardList";
-import { getRecipesById, getRecipesByPage } from "../services/dataService";
+import { getRandomRecipe, getRecipesById, getRecipesByPage } from "../services/dataService";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
     width: "10%",
     padding: "16px",
     borderRadius: "10%",
+    backgroundImage: "linear-gradient(180deg, white, #E6E9EA)"
   },
   ingredientsCarousel: {
     display: "flex",
@@ -62,14 +63,27 @@ const useStyles = makeStyles((theme) => ({
   viewRecipeButton: {
     width: "100%",
   },
-  viewRecipeLink: {
+  linkRoute: {
     textDecoration: "none",
+    color: "black"
+  },
+  recipesHeaderContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  recipesHeader: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
   }
 }));
 
 const Home = () => {
   const classes = useStyles();
   const recipeLink = "/recipes";
+  const ingredientsLink = "/ingredients";
+  const randomPage = Math.floor(Math.random() * (140 - 1) + 1);
   // const params = useParams();
   const [featuredRecipeData, setFeaturedRecipeData] = useState({});
   const [recipeList, setRecipeList] = useState([]);
@@ -77,13 +91,13 @@ const Home = () => {
 
   useEffect(() => {
     // const {recipeId} = params;
-    getRecipesById("air-fryer-pakoras").then((data) => {
+    getRandomRecipe().then((data) => {
       setFeaturedRecipeData(data.recipe);
       // setDirectionSteps(data.steps);
       setIsLoading(false);
     });
 
-    getRecipesByPage(1).then((data) => {
+    getRecipesByPage(randomPage).then((data) => {
       setRecipeList(data.data);
     });
   }, []);
@@ -111,7 +125,7 @@ const Home = () => {
                 <Typography variant="caption">Alton D</Typography>
                 <Typography variant="caption" paragraph>10 September 2022</Typography>
               </div> */}
-              <Link className={classes.viewRecipeLink} to={`${recipeLink}/air-fryer-pakoras`}>
+              <Link className={classes.linkRoute} to={`${recipeLink}/${featuredRecipeData.RecipeID}`}>
                 <Button className={classes.viewRecipeButton} variant="contained" >View Recipe</Button> 
               </Link>
             </div>
@@ -128,17 +142,21 @@ const Home = () => {
           <Typography variant="h3" gutterBottom>
             Ingredients
           </Typography>
-          <Button>View All Ingredients</Button>
+          <Link className={classes.linkRoute} to={ingredientsLink}>
+            <Button>View All Ingredients</Button>
+          </Link>
         </div>
         
         <div className={classes.ingredientsCarousel}>
           <Card className={classes.ingredientCard}>
+          <Link className={classes.linkRoute} to={ingredientsLink}>
             <CardMedia
                 style={{marginBottom: "30px"}}
                 component="img"
                 image="https://encycolorpedia.com/emojis/cooked-rice.svg"
             />
             <Typography variant="h4" align="center">Rice</Typography>
+          </Link>
           </Card>
           <Card className={classes.ingredientCard}>
             <CardMedia
@@ -183,17 +201,26 @@ const Home = () => {
         </div>
       </div>
       <div className={classes.section}>
-        <div className={classes.recipesHeader}>
-          <Typography variant="h3" gutterBottom>
-            Simple and Tasty Recipes
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Find new and easy recipes easily
-          </Typography>  
+        <div className={classes.recipesHeaderContainer}>
+          <div className={classes.recipesHeader}>
+            <Typography variant="h3" gutterBottom>
+              Simple and Tasty Recipes
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Find new and easy recipes easily
+            </Typography>  
+          </div>
+          <div>
+            <Link className={classes.linkRoute} to={recipeLink}>
+              <Button className={classes.viewRecipeButton}>View All Recipes</Button> 
+            </Link>
+          </div>
+          
         </div>
         <div>
           <RecipeCardList recipeCardList={recipeList}/>
         </div>
+        
       </div>
     </div>
   );

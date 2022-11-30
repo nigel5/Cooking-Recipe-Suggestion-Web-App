@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     },
     recipeCardContent: {
       paddingBottom: "36px",
+      height: "215px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
     },
 
     // actions: {
@@ -63,15 +67,17 @@ const RecipeCard = (props) => {
               {recipeCardItem.Name}
             </Typography>
           </div>
-          <CardActions className={classes.actions}>
-            <Chip label={"⏰ " + (recipeCardItem.CookTime ?? recipeCardItem.Prep) }/>
-            <Chip label={`🍴 ${recipeCardItem.Cuisine}`} />
-          </CardActions>
-          <CardActions>
-              <Link className={classes.viewRecipeLink} to={`${recipeLink}/${recipeCardItem.RecipeID}`}>
-                <Button className={classes.viewRecipeButton} variant="outlined" size="medium">View Recipe</Button>
-              </Link>
-          </CardActions>
+          <div className={classes.actionsContainer}>
+            <CardActions className={classes.actions}>
+              <Chip label={"⏰ " + (recipeCardItem.CookTime ?? recipeCardItem.Prep) }/>
+              <Chip label={`🍴 ${recipeCardItem.Cuisine}`} />
+            </CardActions>
+            <CardActions>
+                <Link className={classes.viewRecipeLink} to={`${recipeLink}/${recipeCardItem.RecipeID}`}>
+                  <Button className={classes.viewRecipeButton} variant="outlined" size="medium">View Recipe</Button>
+                </Link>
+            </CardActions>
+          </div>
         </CardContent>
       </Card>
     )
