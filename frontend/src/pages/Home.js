@@ -149,54 +149,64 @@ const Home = () => {
         
         <div className={classes.ingredientsCarousel}>
           <Card className={classes.ingredientCard}>
-          <Link className={classes.linkRoute} to={ingredientsLink}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://encycolorpedia.com/emojis/cooked-rice.svg"
-            />
-            <Typography variant="h4" align="center">Rice</Typography>
-          </Link>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://encycolorpedia.com/emojis/cooked-rice.svg"
+              />
+              <Typography variant="h4" align="center">Rice</Typography>
+            </Link>
           </Card>
           <Card className={classes.ingredientCard}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://emojiguide.org/images/emoji/q/1ho9vysgl820q.png"
-            />
-            <Typography variant="h4" align="center">Lettuce</Typography>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://emojiguide.org/images/emoji/q/1ho9vysgl820q.png"
+              />
+              <Typography variant="h4" align="center">Lettuce</Typography>
+            </Link>
           </Card>
           <Card className={classes.ingredientCard}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://encycolorpedia.com/emojis/cut-of-meat.svg"
-            />
-            <Typography variant="h4" align="center">Beef</Typography>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://encycolorpedia.com/emojis/cut-of-meat.svg"
+              />
+              <Typography variant="h4" align="center">Beef</Typography>
+            </Link>
           </Card>
           <Card className={classes.ingredientCard}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://encycolorpedia.com/emojis/cheese-wedge.svg"
-            />
-            <Typography variant="h4" align="center">Cheese</Typography>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://encycolorpedia.com/emojis/cheese-wedge.svg"
+              />
+              <Typography variant="h4" align="center">Cheese</Typography>
+            </Link>
           </Card>
           <Card className={classes.ingredientCard}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://encycolorpedia.com/emojis/bread.svg"
-            />
-            <Typography variant="h4" align="center">Bread</Typography>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://encycolorpedia.com/emojis/bread.svg"
+              />
+              <Typography variant="h4" align="center">Bread</Typography>
+            </Link>
           </Card>
           <Card className={classes.ingredientCard}>
-            <CardMedia
-                style={{marginBottom: "30px"}}
-                component="img"
-                image="https://encycolorpedia.com/emojis/potato.svg"
-            />
-            <Typography variant="h4" align="center">Potato</Typography>
+            <Link className={classes.linkRoute} to={ingredientsLink}>
+              <CardMedia
+                  style={{marginBottom: "30px"}}
+                  component="img"
+                  image="https://encycolorpedia.com/emojis/potato.svg"
+              />
+              <Typography variant="h4" align="center">Potato</Typography>
+            </Link>
           </Card>
         </div>
       </div>
