@@ -41,7 +41,8 @@ const db = getFirestore(app);
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    return res;
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -58,8 +59,24 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       authProvider: "local",
       email,
     });
+    return res;
   } catch (err) {
     console.error(err);
+    alert(err.message);
+  }
+};
+
+const getUserFromDB = async (uid) => {
+  try {
+    const userQuery = query(collection(db, "users"), where("uid", "==", uid));
+    const doc = await getDocs(userQuery);
+    const data = doc.docs[0].data();
+
+    console.log("user foundL");
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
     alert(err.message);
   }
 };
@@ -67,6 +84,10 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const logout = () => {
   signOut(auth);
 };
+
+const removeRecipeForUser = (user, recipe) => {};
+
+const saveRecipeForuser = (user, recipe) => {};
 
 export {
   auth,
@@ -76,4 +97,5 @@ export {
   registerWithEmailAndPassword,
   // sendPasswordReset,
   logout,
+  getUserFromDB,
 };
