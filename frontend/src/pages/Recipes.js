@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Snackbar,
   Typography,
 } from "@material-ui/core";
 import {
@@ -119,6 +120,21 @@ const Recipes = () => {
   const [ingredientList, setIngredientList] = useState({});
   const [suggestedRecipesList, setSuggestedRecipesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [openSnack, setOpenSnack] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+
+  const handleShareClick = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setOpenSnack(true);
+  };
+
 
   useEffect(() => {
     const { recipeId } = params;
@@ -128,7 +144,8 @@ const Recipes = () => {
       setIngredientList(data.ingredients);
       setIsLoading(false);
       getRecipesByCuisine(data.recipe.Cuisine).then((data) => {
-        setSuggestedRecipesList(data.recipes);
+        
+        setSuggestedRecipesList(data.recipes.filter(e => e.Name != recipeData.Name).slice(0, 8));
         console.log(suggestedRecipesList);
       });
       console.log(directionSteps);
@@ -161,7 +178,7 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">PREP TIME</Typography>
-                <Typography variant="caption">{recipeData.Prep}</Typography>
+                <Typography variant="caption">{recipeData.Prep ?? "0 mins"}</Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
@@ -169,7 +186,7 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">COOK TIME</Typography>
-                <Typography variant="caption">{recipeData.CookTime ?? recipeData.PrepTime}</Typography>
+                <Typography variant="caption">{recipeData.CookTime ?? "0 mins"}</Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
@@ -180,13 +197,13 @@ const Recipes = () => {
           </div>
           <div className={classes.recipeButtons}>
             <div className={classes.recipeButtonItem}>
-              <Avatar>
+              <Avatar onClick={ () => { window.print(); }}>
                 <Print />
               </Avatar>
               <Typography>Print</Typography>
             </div>
             <div className={classes.recipeButtonItem}>
-              <Avatar>
+              <Avatar onClick={ handleShareClick }>
                 <IosShare />
               </Avatar>
               <Typography>Share</Typography>
@@ -206,28 +223,28 @@ const Recipes = () => {
                 <ListItem>
                   <ListItemText primary="Calories" />
                   <span>
-                    <Typography>{recipeData.Calories}</Typography>
+                    <Typography>{recipeData.Calories ?? "0"}</Typography>
                   </span>
                 </ListItem>
                 <Divider light />
                 <ListItem>
                   <ListItemText primary="Total Fat" />
                   <span>
-                    <Typography>{recipeData.Fat}</Typography>
+                    <Typography>{recipeData.Fat ?? "0g"}</Typography>
                   </span>
                 </ListItem>
                 <Divider light />
                 <ListItem>
                   <ListItemText primary="Protein" />
                   <span>
-                    <Typography>{recipeData.Protein}</Typography>
+                    <Typography>{recipeData.Protein ?? "0g"}</Typography>
                   </span>
                 </ListItem>
                 <Divider light />
                 <ListItem>
                   <ListItemText primary="Carbohydrate" />
                   <span>
-                    <Typography>{recipeData.Carbs}</Typography>
+                    <Typography>{recipeData.Carbs ?? "0g"}</Typography>
                   </span>
                 </ListItem>
               </List>
@@ -236,14 +253,14 @@ const Recipes = () => {
           </Card>
         </div>
       </div>
-      {/* <div
+      <div
         className={`${classes.sectionMargin} ${classes.ingredientsContainer}`}
       >
         <IngredientSectionList
           recipeName={recipeData.Name}
           ingredientList={ingredientList}
         />
-        <div className={classes.otherRecipesSection}>
+        {/* <div className={classes.otherRecipesSection}>
           <Typography variant="h4" className={classes.otherRecipesHeader}>
             Other Recipes
           </Typography>
@@ -280,8 +297,8 @@ const Recipes = () => {
               </div>
             </div>
           </Card>
-        </div>
-      </div> */}
+        </div> */}
+      </div>
 
       <div className={`${classes.sectionMargin}`}>
         <DirectionSectionList
@@ -296,6 +313,12 @@ const Recipes = () => {
           <RecipeCardList recipeCardList={suggestedRecipesList} />
         </div>
       </div>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message="Copied URL to Clipboard !"
+      />
     </div>
   );
 };

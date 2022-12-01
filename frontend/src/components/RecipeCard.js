@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     recipeCard: {
-        width: "400px",
+        width: "20%",
         margin: "40px",
         borderRadius: "10%",
       },
@@ -69,12 +69,18 @@ const RecipeCard = (props) => {
           </div>
           <div className={classes.actionsContainer}>
             <CardActions className={classes.actions}>
-              <Chip label={"⏰ " + (recipeCardItem.CookTime ?? recipeCardItem.Prep) }/>
+              <Chip label={"⏰ " + (recipeCardItem.CookTime ?? "0 mins") }/>
               <Chip label={`🍴 ${recipeCardItem.Cuisine}`} />
             </CardActions>
             <CardActions>
                 <Link className={classes.viewRecipeLink} to={`${recipeLink}/${recipeCardItem.RecipeID}`}>
-                  <Button className={classes.viewRecipeButton} variant="outlined" size="medium">View Recipe</Button>
+                  <Button onClick={() => {
+                      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                    }}
+                    className={classes.viewRecipeButton} 
+                    variant="outlined" 
+                    size="medium"
+                  >View Recipe</Button>
                 </Link>
             </CardActions>
           </div>

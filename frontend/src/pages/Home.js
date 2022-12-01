@@ -97,7 +97,7 @@ const Home = () => {
       setIsLoading(false);
     });
 
-    getRecipesByPage(randomPage).then((data) => {
+    getRecipesByPage(randomPage, 12).then((data) => {
       setRecipeList(data.data);
     });
   }, []);

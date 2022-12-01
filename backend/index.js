@@ -365,7 +365,7 @@ app.get("/recipes", async (req, res) => {
       "Error. Please specify a page number between 0 and 149. Like so `recipes?page=1`"
     );
   }
-  if (!Number.isInteger(page) || page < 0 || page > 149) {
+  if (!Number.isInteger(page) || page < 0 || page > 500) {
     return sendError(
       res,
       "Bad pagination index. Please enter a number between 0 and 149"

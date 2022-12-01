@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   ingredientCard: {
-    height: "100%",
-    width: "10%",
+    width: "17.5%",
     minWidth: "150px",
     padding: "16px",
     borderRadius: "10%",
+    backgroundImage: "linear-gradient(180deg, white, #E6E9EA)"
   },
   cardContent: {
     width: "50%",

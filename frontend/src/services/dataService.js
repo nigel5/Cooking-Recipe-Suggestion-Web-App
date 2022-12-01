@@ -1,10 +1,11 @@
 const getRecipesEndpoint = '/recipes'
 const getRecipesByCuisineEndpoint = '/cuisine'
+const getRecipesByIngredientEndpoint= '/search'
 
-const getRecipesByPage = (page) => {
+const getRecipesByPage = (page, pageSize=10) => {
     return new Promise((resolve, reject) => {
-        fetch(getRecipesEndpoint +'?'+ new URLSearchParams({
-            page: page}))
+        fetch(`${getRecipesEndpoint}?${new URLSearchParams({
+            page: page, pageSize: pageSize})}`)
             .then((response) => response.json())
             .then((data) => {
                console.log(data);
@@ -58,4 +59,29 @@ const getRecipesByCuisine = (cuisineName) => {
     })
 }
 
-export {getRecipesByPage, getRecipesById, getRandomRecipe, getRecipesByCuisine}
+const getRecipesByIngredients = (ingredients) => {
+    let searchParam = createIngredientSearchParam(ingredients);
+    return new Promise((resolve, reject) => {
+        fetch(`${getRecipesByIngredientEndpoint}?${searchParam}`)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+           resolve(data);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    })
+}
+
+const createIngredientSearchParam  = (array) => {
+    let searchParam = '';
+    for (const element of array) {
+        searchParam += '&' + new URLSearchParams({
+            ingredient: element }
+        )
+    }
+    return searchParam
+}
+
+export {getRecipesByPage, getRecipesById, getRandomRecipe, getRecipesByCuisine, getRecipesByIngredients}

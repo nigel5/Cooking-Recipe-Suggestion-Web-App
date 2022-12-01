@@ -28,7 +28,7 @@ const RecipesList = () => {
   const [recipeCardList, setRecipeCardList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    getRecipesByPage(pageNumber).then((data) => {
+    getRecipesByPage(pageNumber, 8).then((data) => {
       setRecipeCardList(data.data);
       setIsLoading(false);
     });
@@ -49,7 +49,7 @@ const RecipesList = () => {
       <RecipeCardList recipeCardList={recipeCardList} />
       <div className={classes.paginationBarContainer}>
         <Pagination
-          count={143}
+          count={178}
           color="primary"
           onChange={(event, pageNumber) => handlePageNumber(event, pageNumber)}
         />

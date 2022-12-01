@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (min-width: 1500px)": {
       width: "100%",
     },
+    justifyContent: "center",
   },
   grid2: {
     width: "100%",
@@ -26,13 +27,6 @@ const IngredientsList = (props) => {
     <div className={classes.grid}>
       {props.ingredients ? (
         props.ingredients
-          .filter((ingr) =>
-            ingr.ingredientName
-              .toLowerCase()
-              .includes(
-                props.filter === undefined ? "" : props.filter.toLowerCase()
-              )
-          )
           .map((ingr) => {
             return (
               <IngredientCard
