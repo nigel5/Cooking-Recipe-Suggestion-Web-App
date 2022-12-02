@@ -1469,11 +1469,6 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "American cheese OR your choice",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "lard",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
@@ -1654,11 +1649,6 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "all-purpose flour for dusting",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "pork shank",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
@@ -1679,11 +1669,6 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "ancho chili powder",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "beef consomme",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
@@ -1695,11 +1680,6 @@ let testIngredientsList = [
   },
   {
     ingredientName: "cinnamon sugar",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
-    ingredientName: "all-purpose flour*",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
@@ -3209,11 +3189,6 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "andouille sausage link",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "green zucchini",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
@@ -3540,11 +3515,6 @@ let testIngredientsList = [
   },
   {
     ingredientName: "pork liver",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
-    ingredientName: "asparagu",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
@@ -8189,11 +8159,6 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "Aleppo pepper flakes or other red pepper flake",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "black olive",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
@@ -9029,17 +8994,7 @@ let testIngredientsList = [
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
   {
-    ingredientName: "all-purpose flour for dusting*",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
     ingredientName: "unsalted pistachio",
-    ingredientImageLink:
-      "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
-  },
-  {
-    ingredientName: "all-purpose flour for coating",
     ingredientImageLink:
       "https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f372.png",
   },
