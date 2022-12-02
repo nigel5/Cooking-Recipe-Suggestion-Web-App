@@ -56,12 +56,12 @@ const RecipeCard = (props) => {
     }),
     isOnSavedRecipes: PropTypes.bool,
   };
-  const [userAcc, setUser] = useContext(UserContext);
   const classes = useStyles();
   let { recipeCardItem } = props;
   const navigate = useNavigate();
 
   const addSavedRecipe = () => {
+    console.log("add saved recipe");
     // Check if logged in
     const token = sessionStorage.getItem("Auth Token");
     const uid = sessionStorage.getItem("uid");

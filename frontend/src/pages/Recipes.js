@@ -20,14 +20,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Image } from "mui-image";
 import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  recipeAndIngredientsList,
-  testRecipeItems,
-} from "../testData/testData";
 import RecipeCardList from "../components/RecipeCardList";
 import IngredientSectionList from "../components/recipes/IngredientSectionList";
-import StrikeThroughText from "../components/StrikeThroughText";
-import { getRecipesByCuisine, getRecipesById, getRecipesByPage } from "../services/dataService";
+import {
+  getRecipesByCuisine,
+  getRecipesById,
+  getRecipesByPage,
+} from "../services/dataService";
 import DirectionSectionList from "../components/DirectionsSectionList";
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "32px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   otherRecipesSection: {
     width: "30%",
@@ -123,7 +122,7 @@ const Recipes = () => {
   const [openSnack, setOpenSnack] = useState(false);
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -135,7 +134,6 @@ const Recipes = () => {
     setOpenSnack(true);
   };
 
-
   useEffect(() => {
     const { recipeId } = params;
     getRecipesById(recipeId).then((data) => {
@@ -144,20 +142,18 @@ const Recipes = () => {
       setIngredientList(data.ingredients);
       setIsLoading(false);
       getRecipesByCuisine(data.recipe.Cuisine).then((data) => {
-        
-        setSuggestedRecipesList(data.recipes.filter(e => e.Name != recipeData.Name).slice(0, 8));
-        console.log(suggestedRecipesList);
+        setSuggestedRecipesList(
+          data.recipes.filter((e) => e.Name != recipeData.Name).slice(0, 8)
+        );
       });
-      console.log(directionSteps);
     });
-    
   }, [params]);
 
   const classes = useStyles();
 
   return isLoading ? (
     <CircularProgress />
-    ) : (
+  ) : (
     <div>
       <div className={classes.sectionMargin}>
         <Typography variant="h1">{recipeData.Name}</Typography>
@@ -178,7 +174,9 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">PREP TIME</Typography>
-                <Typography variant="caption">{recipeData.Prep ?? "0 mins"}</Typography>
+                <Typography variant="caption">
+                  {recipeData.Prep ?? "0 mins"}
+                </Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
@@ -186,7 +184,9 @@ const Recipes = () => {
               <AccessTimeFilled style={{ marginRight: "16px" }} />
               <div>
                 <Typography variant="subtitle2">COOK TIME</Typography>
-                <Typography variant="caption">{recipeData.CookTime ?? "0 mins"}</Typography>
+                <Typography variant="caption">
+                  {recipeData.CookTime ?? "0 mins"}
+                </Typography>
               </div>
             </div>
             <Divider orientation="vertical" flexItem />
@@ -197,13 +197,17 @@ const Recipes = () => {
           </div>
           <div className={classes.recipeButtons}>
             <div className={classes.recipeButtonItem}>
-              <Avatar onClick={ () => { window.print(); }}>
+              <Avatar
+                onClick={() => {
+                  window.print();
+                }}
+              >
                 <Print />
               </Avatar>
               <Typography>Print</Typography>
             </div>
             <div className={classes.recipeButtonItem}>
-              <Avatar onClick={ handleShareClick }>
+              <Avatar onClick={handleShareClick}>
                 <IosShare />
               </Avatar>
               <Typography>Share</Typography>

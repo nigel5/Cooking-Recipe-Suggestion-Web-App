@@ -13,7 +13,6 @@ const YourSavedRecipes = () => {
   useEffect(() => {
     const authToken = sessionStorage.getItem("Auth Token");
     const uid = sessionStorage.getItem("uid");
-    console.log(authToken);
     if (!authToken) {
       navigate("/login");
     }
@@ -24,8 +23,6 @@ const YourSavedRecipes = () => {
 
   const retrieveAllRecipesForUser = async (uid) => {
     const recipes = await getAllRecipesForUser(uid);
-    console.log("Saved recipes");
-    console.log(recipes);
     setSavedRecipes(recipes);
   };
 
