@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { React, useContext } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { saveRecipeForuser } from "../firebase";
 
@@ -31,12 +31,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-
-  // actions: {
-  //   display: "flex",
-  //   justifyContent: "space-between",
-
-  // },
   labelChip: {
     marginRight: "24px",
   },
@@ -60,10 +54,12 @@ const RecipeCard = (props) => {
       recipeType: PropTypes.string,
       recipeImageLink: PropTypes.string,
     }),
+    isOnSavedRecipes: PropTypes.bool,
   };
   const [userAcc, setUser] = useContext(UserContext);
   const classes = useStyles();
   let { recipeCardItem } = props;
+  const navigate = useNavigate();
 
   const addSavedRecipe = () => {
     // Check if logged in
@@ -73,6 +69,8 @@ const RecipeCard = (props) => {
     if (token && uid) {
       // Save recipe
       saveRecipeForuser(uid, recipeCardItem);
+    } else {
+      navigate("/login");
     }
   };
 
@@ -110,7 +108,11 @@ const RecipeCard = (props) => {
                 View Recipe
               </Button>
             </Link>
-            <Button onClick={addSavedRecipe}>Add to Saved Recipes</Button>
+            {!props.isOnSavedRecipes && (
+              <Button variant="outlined" onClick={addSavedRecipe}>
+                Save Recipe
+              </Button>
+            )}
           </CardActions>
         </div>
       </CardContent>

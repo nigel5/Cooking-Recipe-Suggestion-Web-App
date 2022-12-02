@@ -50,7 +50,13 @@ const YourSavedRecipes = () => {
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
         {savedRecipes.map((recipe, index) => {
-          return <RecipeCard key={index} recipeCardItem={recipe} />;
+          return (
+            <RecipeCard
+              key={index}
+              isOnSavedRecipes={true}
+              recipeCardItem={recipe}
+            />
+          );
         })}
       </div>
     </div>

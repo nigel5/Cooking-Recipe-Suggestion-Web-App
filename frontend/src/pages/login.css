@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+
+.login {
+    font-size: 40px;
+    z-index: 10;
+	width: 600px;
+	padding: 30px;
+	padding-top: 156px;
+}
+
+.login__field {
+	padding: 20px 0px;	
+	position: relative;	
+}
+
+.login__icon {
+	position: absolute;
+	top: 30px;
+	color: #ec5720;
+}
+
+.login__input {
+	border: none;
+    font-size: 30px;
+	border-bottom: 2px solid #ec5720;
+	background: none;
+	padding: 10px;
+	padding-left: 50px;
+	font-weight: 600;
+	width: 80%;
+	transition: .2s;
+}
+
+.login__input:active,
+.login__input:focus,
+.login__input:hover {
+	outline: none;
+	border-bottom-color: #ec5720;
+}
+
+.login__submit {
+	background: #fff;
+	font-size: 30px;
+	margin-top: 30px;
+	padding: 16px 20px;
+	border-radius: 160px;
+	border: 1px solid #ec5720;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	width: 80%;
+	color: #ec5720;
+	box-shadow: 0px 2px 2px #7d2a0b;
+	cursor: pointer;
+	transition: .2s;
+    font-style: normal !important;
+    text-decoration: none !important;
+}
+
+.login__submit:active,
+.login__submit:focus,
+.login__submit:hover {
+	border-color: #ec5720;
+	outline: none;
+}
+
+.button__icon {
+	font-size: 50px;
+	margin-left: auto;
+	color: #ec5720;
+}
