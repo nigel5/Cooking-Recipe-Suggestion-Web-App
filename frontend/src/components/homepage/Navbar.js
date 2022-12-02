@@ -25,34 +25,25 @@ const Navbar = () => {
     >
       <ul className="nav-type">
         <Link to="/" className="link">
-          {/* <a href="/" className="link active"> */}
           Cook.io
-          {/* </a> */}
         </Link>
         <div className="line"></div>
         <Link to="/" className="link">
-          {/* <a href="/" className="link active"> */}
           Home
-          {/* </a> */}
         </Link>
         <Link to="/ingredients" className="link">
-          {/* <a href="/ingredients" className="link active1"> */}
           Ingredients
-          {/* </a> */}
         </Link>
         <Link to="/recipes" className="link">
-          {/* <a href="/recipes" className="link active2"> */}
           Recipes
-          {/* </a> */}
         </Link>
         <Link to="/yourSavedRecipes" className="link">
-          {/* <a href="/yourSavedRecipes" className="link"> */}
           Your Recipes
-          {/* </a> */}
         </Link>
         <div style={{ marginLeft: "auto" }}>
           {sessionStorage.getItem("Auth Token") ? (
-            <Button
+            <Link
+              className="link"
               onClick={() => {
                 sessionStorage.removeItem("Auth Token");
                 sessionStorage.removeItem("uid");
@@ -61,31 +52,13 @@ const Navbar = () => {
               }}
             >
               <span className="link"> Logout </span>
-            </Button>
+            </Link>
           ) : (
             <Link to="/login" className="link">
               Login
             </Link>
           )}
         </div>
-
-        {/* <Link style={{ marginLeft: "auto" }}>
-          {sessionStorage.getItem("Auth Token") ? (
-            <a
-              onClick={() => {
-                sessionStorage.removeItem("Auth Token");
-                logout();
-              }}
-              className="link"
-            >
-              Logout
-            </a>
-          ) : (
-            <a href="/login" className="link">
-              Login
-            </a>
-          )}
-        </Link> */}
       </ul>
     </div>
   );

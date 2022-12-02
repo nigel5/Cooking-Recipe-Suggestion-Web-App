@@ -17,7 +17,9 @@ const YourSavedRecipes = () => {
     if (!authToken) {
       navigate("/login");
     }
-    retrieveAllRecipesForUser(uid);
+    if (uid && authToken) {
+      retrieveAllRecipesForUser(uid);
+    }
   }, []);
 
   const retrieveAllRecipesForUser = async (uid) => {
@@ -39,6 +41,11 @@ const YourSavedRecipes = () => {
   return (
     <div style={{ marginTop: "50px" }}>
       <Typography variant="h2">Your Saved Recipes</Typography>
+      {savedRecipes.length === 0 && (
+        <Typography variant="p" style={{ paddingTop: "20px" }}>
+          Looks like you don't have any recipes saved yet.
+        </Typography>
+      )}
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
