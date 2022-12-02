@@ -6,6 +6,7 @@ import {
   CardMedia,
   Chip,
   makeStyles,
+  Snackbar,
   Typography,
 } from "@material-ui/core";
 import { React, useContext } from "react";
@@ -13,6 +14,7 @@ import PropTypes from "prop-types";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { saveRecipeForuser } from "../firebase";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   recipeCard: {
@@ -60,8 +62,15 @@ const RecipeCard = (props) => {
   let { recipeCardItem } = props;
   const navigate = useNavigate();
 
+  const [openSnack, setOpenSnack] = useState(false);
+  
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
+
   const addSavedRecipe = () => {
     console.log("add saved recipe");
+    setOpenSnack(true);
     // Check if logged in
     const token = sessionStorage.getItem("Auth Token");
     const uid = sessionStorage.getItem("uid");
@@ -116,6 +125,12 @@ const RecipeCard = (props) => {
           </CardActions>
         </div>
       </CardContent>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={`${recipeCardItem.Name} saved to Your Recipes !` }
+      />
     </Card>
   );
 };
