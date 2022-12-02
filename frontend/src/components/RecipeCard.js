@@ -41,8 +41,15 @@ const useStyles = makeStyles((theme) => ({
   },
   viewRecipeLink: {
     textDecoration: "none",
-    width: "100%",
+    width: "50%",
   },
+  saveRecipeButton: {
+    width: "50%",
+  },
+  fullWidth: {
+    width: "100%",
+    textDecoration: "none",
+  }
 }));
 
 const recipeLink = "/recipes";
@@ -84,11 +91,18 @@ const RecipeCard = (props) => {
 
   return (
     <Card className={classes.recipeCard}>
-      <CardMedia
-        className={classes.recipeCardImg}
-        component="img"
-        image={recipeCardItem.ImgLink}
-      />
+      <Link
+        to={`${recipeLink}/${recipeCardItem.RecipeID}`}
+        onClick={() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }}
+      >
+        <CardMedia
+          className={classes.recipeCardImg}
+          component="img"
+          image={recipeCardItem.ImgLink}
+        />
+      </Link>
       <CardContent className={classes.recipeCardContent}>
         <div>
           <Typography gutterBottom variant="h5" align="left">
@@ -102,7 +116,7 @@ const RecipeCard = (props) => {
           </CardActions>
           <CardActions>
             <Link
-              className={classes.viewRecipeLink}
+              className={(props.isOnSavedRecipes ? `${classes.fullWidth}` : `${classes.viewRecipeLink}`)}
               to={`${recipeLink}/${recipeCardItem.RecipeID}`}
             >
               <Button
@@ -117,7 +131,7 @@ const RecipeCard = (props) => {
               </Button>
             </Link>
             {!props.isOnSavedRecipes && (
-              <Button variant="outlined" onClick={addSavedRecipe}>
+              <Button className={classes.saveRecipeButton} variant="outlined" onClick={addSavedRecipe}>
                 Save Recipe
               </Button>
             )}
