@@ -17,6 +17,9 @@ import {
   collection,
   where,
   addDoc,
+  updateDoc,
+  doc,
+  arrayUnion,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -49,6 +52,36 @@ const logInWithEmailAndPassword = async (email, password) => {
   }
 };
 
+const saveRecipeForuser = async (uid, recipe) => {
+  try {
+    const userQuery = query(collection(db, "users"), where("uid", "==", uid));
+    const userDocs = await getDocs(userQuery);
+    const user = userDocs.docs[0];
+    const userRef = doc(db, "users", user.id);
+
+    await updateDoc(userRef, { recipes: arrayUnion(recipe) });
+  } catch (err) {
+    console.log(err);
+    alert(err.message);
+  }
+};
+
+const getAllRecipesForUser = async (uid) => {
+  // getFirestore().collection("users")
+  // .where("uid", "==", uid)
+  // .
+  try {
+    const userQuery = query(collection(db, "users"), where("uid", "==", uid));
+    const userDocs = await getDocs(userQuery);
+    const user = userDocs.docs[0].data();
+
+    return user.recipes;
+  } catch (err) {
+    console.log(err);
+    alert(err.message);
+  }
+};
+
 const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -58,6 +91,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       name,
       authProvider: "local",
       email,
+      recipes: [],
     });
     return res;
   } catch (err) {
@@ -87,8 +121,6 @@ const logout = () => {
 
 const removeRecipeForUser = (user, recipe) => {};
 
-const saveRecipeForuser = (user, recipe) => {};
-
 export {
   auth,
   db,
@@ -98,4 +130,7 @@ export {
   // sendPasswordReset,
   logout,
   getUserFromDB,
+  saveRecipeForuser,
+  getAllRecipesForUser,
+  removeRecipeForUser,
 };

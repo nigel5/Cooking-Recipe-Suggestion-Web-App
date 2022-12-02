@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { auth, registerWithEmailAndPassword } from "../firebase";
 import { Button, CircularProgress } from "@material-ui/core";
 import { UserContext } from "../UserContext";
+import { getUserFromDB } from "../firebase";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
-  const { userAcc } = useContext(UserContext);
+  const [userAcc, setUser] = useContext(UserContext);
   let navigate = useNavigate();
 
   const register = async () => {
@@ -18,6 +19,9 @@ const Register = () => {
     const response = await registerWithEmailAndPassword(name, email, password);
     sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
     sessionStorage.setItem("uid", response.user.uid);
+    const userinfo = await getUserFromDB(response.user.uid);
+    setUser(userinfo);
+    navigate("/");
   };
 
   useEffect(() => {
