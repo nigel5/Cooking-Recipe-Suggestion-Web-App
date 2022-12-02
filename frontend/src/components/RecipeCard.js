@@ -69,8 +69,6 @@ const RecipeCard = (props) => {
   };
 
   const addSavedRecipe = () => {
-    console.log("add saved recipe");
-    setOpenSnack(true);
     // Check if logged in
     const token = sessionStorage.getItem("Auth Token");
     const uid = sessionStorage.getItem("uid");
@@ -78,6 +76,7 @@ const RecipeCard = (props) => {
     if (token && uid) {
       // Save recipe
       saveRecipeForuser(uid, recipeCardItem);
+      setOpenSnack(true);
     } else {
       navigate("/login");
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -6,6 +6,7 @@ import {
   Typography,
   makeStyles,
   Button,
+  Snackbar,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { getByPlaceholderText } from "@testing-library/react";
@@ -17,6 +18,12 @@ import { UserContext } from "../../UserContext";
 const Navbar = () => {
   const [user, loading, auth] = useAuthState(firebaseAuth);
   const [userAcc, setUser] = useContext(UserContext);
+
+  const [openSnack, setOpenSnack] = useState(false);
+
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
 
   return (
     <div
@@ -48,8 +55,10 @@ const Navbar = () => {
                 sessionStorage.removeItem("Auth Token");
                 sessionStorage.removeItem("uid");
                 setUser(undefined);
+                setOpenSnack(true);
                 logout();
               }}
+              to="/"
             >
               <span className="link"> Logout </span>
             </Link>
@@ -60,6 +69,12 @@ const Navbar = () => {
           )}
         </div>
       </ul>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message="Logged Out !"
+      />
     </div>
   );
 };
