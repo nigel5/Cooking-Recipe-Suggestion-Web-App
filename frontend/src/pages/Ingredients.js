@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionContainer: {
     marginBottom: "40px",
-  }
+  },
 }));
 
 const Ingredients = () => {
@@ -53,7 +53,6 @@ const Ingredients = () => {
   const handleCardClick = (e, ingredientName, ingredientImage) => {
     setMatchedRecipes([]);
     setNoSearchResults(false);
-    console.log(ingredientName + ", " + ingredientImage);
     // Add element if it doesn't already exist in list
     const element = selectedIngrs.find(
       (ingr) => ingr.ingredientName === ingredientName
@@ -69,7 +68,6 @@ const Ingredients = () => {
   const handleSelectedCardClick = (e, ingredientName, ingredientImage) => {
     setMatchedRecipes([]);
     setNoSearchResults(false);
-    console.log(`${ingredientName}, ${ingredientImage}`);
     setSelectedIngrs((ingrs) => {
       const newingrs = [...ingrs];
       const index = newingrs.findIndex(
@@ -88,7 +86,7 @@ const Ingredients = () => {
     );
     getRecipesByIngredients(ingredients).then((data) => {
       setMatchedRecipes(data.results);
-      if(data.results.length === 0) {
+      if (data.results.length === 0) {
         setNoSearchResults(true);
       } else {
         setNoSearchResults(false);
@@ -104,7 +102,8 @@ const Ingredients = () => {
         <Typography variant="h1">Ingredients</Typography>
         {/* <div className={classes.headerSpacing}></div> */}
         <Typography gutterBottom variant="body1">
-          Search for the ingredients you have at home here and we will show you what recipes you can use !
+          Search for the ingredients you have at home here and we will show you
+          what recipes you can use !
         </Typography>
       </div>
       <SearchField
@@ -117,10 +116,12 @@ const Ingredients = () => {
           ingredients={
             ingredients &&
             ingredients
-              .filter((ingr) =>
-                ingr.ingredientName
-                  .toLowerCase()
-                  .indexOf(filter === undefined ? "" : filter.toLowerCase()) > -1
+              .filter(
+                (ingr) =>
+                  ingr.ingredientName
+                    .toLowerCase()
+                    .indexOf(filter === undefined ? "" : filter.toLowerCase()) >
+                  -1
               )
               .sort((a, b) => a.ingredientName.localeCompare(b.ingredientName))
               .slice((pageNumber - 1) * 10, pageNumber * 10)
@@ -132,16 +133,22 @@ const Ingredients = () => {
       <div className={`${classes.centerContainer} ${classes.sectionContainer}`}>
         <Pagination
           count={
-            ingredients && ingredients.filter((ingr) =>
-              ingr.ingredientName
-                .toLowerCase()
-                .indexOf(filter === undefined ? "" : filter.toLowerCase()) > -1
+            ingredients &&
+            ingredients.filter(
+              (ingr) =>
+                ingr.ingredientName
+                  .toLowerCase()
+                  .indexOf(filter === undefined ? "" : filter.toLowerCase()) >
+                -1
             )
               ? Math.floor(
-                  ingredients.filter((ingr) =>
-                    ingr.ingredientName
-                      .toLowerCase()
-                      .indexOf(filter === undefined ? "" : filter.toLowerCase()) > -1
+                  ingredients.filter(
+                    (ingr) =>
+                      ingr.ingredientName
+                        .toLowerCase()
+                        .indexOf(
+                          filter === undefined ? "" : filter.toLowerCase()
+                        ) > -1
                   ).length / 10
                 )
               : 200
@@ -151,7 +158,7 @@ const Ingredients = () => {
           page={pageNumber}
         />
       </div>
-      
+
       {selectedIngrs.length > 0 && (
         <div className={classes.sectionContainer}>
           <div className={classes.centerContainer}>
@@ -163,24 +170,30 @@ const Ingredients = () => {
             handleCardClick={handleSelectedCardClick}
           />
           <div className={classes.centerContainer}>
-            <Button variant="contained" onClick={handleSearchClick} color="primary">
+            <Button
+              variant="contained"
+              onClick={handleSearchClick}
+              color="primary"
+            >
               Search for Recipes
             </Button>
           </div>
         </div>
-
-        
       )}
       {matchedRecipes.length > 0 && (
         <div className={classes.sectionContainer}>
-          <Typography variant="h2">Search Results ({matchedRecipes.length})</Typography>
+          <Typography variant="h2">
+            Search Results ({matchedRecipes.length})
+          </Typography>
           <RecipeCardList recipeCardList={matchedRecipes}></RecipeCardList>{" "}
         </div>
       )}
       {noSearchResults && (
         <div className={classes.sectionContainer}>
           <div className={classes.centerContainer}>
-            <Typography variant="h2">Search Results ({matchedRecipes.length})</Typography>
+            <Typography variant="h2">
+              Search Results ({matchedRecipes.length})
+            </Typography>
           </div>
           <div className={classes.centerContainer}>
             <Typography gutterBottom variant="body1">
