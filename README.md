@@ -1,6 +1,23 @@
 # Cooking-Recipe-Suggestion-Web-App
 
-A web application that seeks to provide cooking recipes to users based on the ingredients they possess.
+A web application that provides cooking recipes to users based on the ingredients they possess.
+Has over 1930 ingredients and 1489 recipes parsed from publicly available data.
+
+**Created using:**
+
+- React.js
+- Express
+- Redis (caching)
+- MaterialUI
+- Firebase (authentication, cloud firestore)
+- Python automation
+- PostgreSQL
+- [Figma](https://www.figma.com/file/o5BUALx2HQwnzOOXdlYtFU/recipe-prototype?node-id=1%3A296)
+- Jira
+
+
+![Home page demo](gifs/home_page.gif)
+
 
 ### Initial Setup
 
